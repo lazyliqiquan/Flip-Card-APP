@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url('/static/iconfont/iconfont.ttf') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jisuan:before {
+  content: "\e680";
+}
+
+.icon-msg:before {
+  content: "\e66d";
+}
+
+.icon-time:before {
+  content: "\e6b7";
+}
+
+.icon-date:before {
+  content: "\e604";
+}
+
