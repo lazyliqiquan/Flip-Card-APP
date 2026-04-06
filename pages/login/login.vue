@@ -20,24 +20,43 @@
 		ref
 	} from 'vue'
 	import RightToast from '@/components/RightToast.vue'
+	import {
+		aesDecrypt,
+		aesEncrypt
+	} from '@/utils/crypto'
+	import Request from '@/utils/request'
+	import {
+		useUserStore
+	} from '@/stores/user'
 
 	const toastRef = ref(null)
 
 	const link = ref('')
 	let isClick = false
-	const handleLogin = () => {
+	const handleLogin = async () => {
 		if (isClick) return
-		console.log('1')
 		isClick = true
-		setTimeout(() => {
-			isClick = false
-		}, 5000)
-		// 拿到link.value，然后尝试连接该设备
-		// 如果连接失败，展示失败的原因
-		// toastRef.value.show('设备启动成是当今世界的卡就觉得功')
-		uni.reLaunch({
-			url: '/pages/sendMsg/sendMsg'
-		})
+		if (link.value === '') {
+			toastRef.value.show('请输入设备链接')
+		}
+		const d = aesDecrypt(link.value)
+		console.log(d)
+		// const m = aesEncrypt('lqq#lqq#http://192.168.1.30:8000')
+		// console.log(m)
+		const info = d.split('#')
+		if (info.length !== 3) {
+			toastRef.value.show('设备链接无效')
+		}
+
+		const store = useUserStore()
+		store.username = info[0]
+		store.password = info[1]
+		Request.init(info[2])
+		await store.login()
+		if (store.isLogin) {
+			toastRef.value.show('登陆失败')
+		}
+		isClick = false
 
 	}
 </script>

@@ -27,7 +27,7 @@
 		{
 			"path": "pages/calcGame/calcGame",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationStyle": "custom"
 			}
 		}
 	],

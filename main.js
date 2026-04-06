@@ -1,14 +1,12 @@
-import { createSSRApp } from 'vue'
-import App from './App.vue'
-import { createPinia } from 'pinia'
+import App from './App'
+import { createSSRApp } from 'vue';
+import * as Pinia from 'pinia';
 
 export function createApp() {
-  const app = createSSRApp(App)
-
-  const pinia = createPinia()
-  app.use(pinia)
-
-  return {
-    app
-  }
+	const app = createSSRApp(App);
+	app.use(Pinia.createPinia());
+	return {
+		app,
+		Pinia, // 此处必须将 Pinia 返回
+	};
 }

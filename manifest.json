@@ -1,5 +1,5 @@
 {
-    "name" : "flip-card-app",
+    "name" : "翻页时钟",
     "appid" : "",
     "description" : "",
     "versionName" : "1.0.0",
@@ -7,12 +7,13 @@
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
+        "usesCleartextTraffic" : true,
         "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
-            "alwaysShowBeforeRender" : true,
-            "waiting" : true,
+            "alwaysShowBeforeRender" : false,
+            "waiting" : false,
             "autoclose" : true,
             "delay" : 0
         },
@@ -43,7 +44,26 @@
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {},
+            "splashscreen" : {
+                "androidStyle" : "default",
+                "android" : {
+                    "hdpi" : "static/splash/splash_480_762.png",
+                    "xxhdpi" : "static/splash/splash_1080_1882.png",
+                    "xhdpi" : "static/splash/splash_720_1242.png"
+                }
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "static/icon/icon_72_72.png",
+                    "xhdpi" : "static/icon/icon_96_96.png",
+                    "xxhdpi" : "static/icon/icon_144_144.png",
+                    "xxxhdpi" : "static/icon/icon_192_192.png"
+                },
+                "ios" : {
+                    "appstore" : ""
+                }
+            }
         }
     },
     /* 快应用特有相关 */

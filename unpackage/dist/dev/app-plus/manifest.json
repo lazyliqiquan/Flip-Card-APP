@@ -5,7 +5,7 @@
     "iPad"
   ],
   "id": "",
-  "name": "flip-card-app",
+  "name": "翻页时钟",
   "version": {
     "name": "1.0.0",
     "code": "100"
@@ -27,9 +27,8 @@
       "concatenate": true
     },
     "splashscreen": {
-      "target": "id:1",
-      "autoclose": true,
-      "waiting": true,
+      "autoclose": false,
+      "waiting": false,
       "delay": 0
     },
     "popGesture": "close",
@@ -38,10 +37,30 @@
       "id": "1",
       "kernel": "WKWebview"
     },
+    "usesCleartextTraffic": true,
     "usingComponents": true,
     "nvueStyleCompiler": "uni-app",
     "compilerVersion": 3,
     "distribute": {
+      "splashscreen": {
+        "androidStyle": "default",
+        "android": {
+          "hdpi": "static/splash/splash_480_762.png",
+          "xxhdpi": "static/splash/splash_1080_1882.png",
+          "xhdpi": "static/splash/splash_720_1242.png"
+        }
+      },
+      "icons": {
+        "android": {
+          "hdpi": "static/icon/icon_72_72.png",
+          "xhdpi": "static/icon/icon_96_96.png",
+          "xxhdpi": "static/icon/icon_144_144.png",
+          "xxxhdpi": "static/icon/icon_192_192.png"
+        },
+        "ios": {
+          "appstore": ""
+        }
+      },
       "google": {
         "permissions": [
           "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
@@ -82,7 +101,7 @@
     "uni-app": {
       "control": "uni-v3",
       "vueVersion": "3",
-      "compilerVersion": "4.87",
+      "compilerVersion": "5.06",
       "nvueCompiler": "uni-app",
       "renderer": "auto",
       "nvue": {

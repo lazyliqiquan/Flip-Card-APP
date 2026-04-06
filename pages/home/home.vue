@@ -22,6 +22,7 @@
 		ref
 	} from 'vue'
 	import TopBar from '@/components/TopBar.vue'
+		import RightToast from '@/components/RightToast.vue'
 
 	const activeIndex = ref(0)
 
@@ -43,6 +44,15 @@
 
 	const handleClick = (index) => {
 		activeIndex.value = index
+		if(index===2){
+			uni.reLaunch({
+				url:'/pages/sendMsg/sendMsg'
+			})
+		}else if(index === 3){
+			uni.reLaunch({
+				url:'/pages/calcGame/calcGame'
+			})
+		}
 	}
 
 	const openSetting = () => {
