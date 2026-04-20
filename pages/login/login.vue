@@ -33,22 +33,20 @@
 
 	const link = ref('')
 	let isClick = false
+	const store = useUserStore()
 	const handleLogin = async () => {
 		if (isClick) return
 		isClick = true
-		if (link.value === '') {
-			toastRef.value.show('请输入设备链接')
-		}
 		const d = aesDecrypt(link.value)
-		console.log(d)
+		// console.log(d)
 		// const m = aesEncrypt('lqq#lqq#http://192.168.1.30:8000')
 		// console.log(m)
+		// P2VJAxR4eflv+wJD0xovnsOnA526bvA7KKCb7MjG9LPLR31OL5FML7XNkCqwx+UE
 		const info = d.split('#')
 		if (info.length !== 3) {
 			toastRef.value.show('设备链接无效')
 		}
 
-		const store = useUserStore()
 		store.username = info[0]
 		store.password = info[1]
 		Request.init(info[2])
@@ -57,7 +55,6 @@
 			toastRef.value.show('登陆失败')
 		}
 		isClick = false
-
 	}
 </script>
 

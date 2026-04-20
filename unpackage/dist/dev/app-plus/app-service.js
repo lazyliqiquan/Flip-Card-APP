@@ -37,28 +37,6 @@ if (uni.restoreGlobal) {
 }
 (function(vue) {
   "use strict";
-  const ON_LAUNCH = "onLaunch";
-  function requireNativePlugin(name) {
-    return weex.requireModule(name);
-  }
-  function formatAppLog(type, filename, ...args) {
-    if (uni.__log__) {
-      uni.__log__(type, filename, ...args);
-    } else {
-      console[type].apply(console, [...args, filename]);
-    }
-  }
-  function resolveEasycom(component, easycom) {
-    return typeof component === "string" ? easycom : component;
-  }
-  const createLifeCycleHook = (lifecycle, flag = 0) => (hook, target = vue.getCurrentInstance()) => {
-    !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
-  };
-  const onLaunch = /* @__PURE__ */ createLifeCycleHook(
-    ON_LAUNCH,
-    1
-    /* HookFlags.APP */
-  );
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -66,7 +44,7 @@ if (uni.restoreGlobal) {
     }
     return target;
   };
-  const _sfc_main$8 = {
+  const _sfc_main$9 = {
     __name: "RightToast",
     setup(__props, { expose: __expose }) {
       const visible = vue.ref(false);
@@ -97,7 +75,7 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "wrapper" }, [
       vue.createElementVNode(
         "view",
@@ -124,7 +102,35 @@ if (uni.restoreGlobal) {
       )
     ]);
   }
-  const RightToast = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-ed1f1fd3"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/RightToast.vue"]]);
+  const RightToast = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-ed1f1fd3"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/RightToast.vue"]]);
+  const ON_SHOW = "onShow";
+  const ON_LAUNCH = "onLaunch";
+  function requireNativePlugin(name) {
+    return weex.requireModule(name);
+  }
+  function formatAppLog(type, filename, ...args) {
+    if (uni.__log__) {
+      uni.__log__(type, filename, ...args);
+    } else {
+      console[type].apply(console, [...args, filename]);
+    }
+  }
+  function resolveEasycom(component, easycom) {
+    return typeof component === "string" ? easycom : component;
+  }
+  const createLifeCycleHook = (lifecycle, flag = 0) => (hook, target = vue.getCurrentInstance()) => {
+    !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
+  };
+  const onShow = /* @__PURE__ */ createLifeCycleHook(
+    ON_SHOW,
+    1 | 2
+    /* HookFlags.PAGE */
+  );
+  const onLaunch = /* @__PURE__ */ createLifeCycleHook(
+    ON_LAUNCH,
+    1
+    /* HookFlags.APP */
+  );
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
   function getDefaultExportFromCjs(x) {
     return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
@@ -2567,15 +2573,15 @@ if (uni.restoreGlobal) {
         }
       })(commonjsGlobal, function(CryptoJS2) {
         /** @preserve
-            			(c) 2012 by Cédric Mesnil. All rights reserved.
+        				(c) 2012 by Cédric Mesnil. All rights reserved.
         
-            			Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+        				Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
         
-            			    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-            			    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+        				    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+        				    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
         
-            			THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-            			*/
+        				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        				*/
         (function(Math2) {
           var C = CryptoJS2;
           var C_lib = C.lib;
@@ -8684,27 +8690,23 @@ This will fail in production if not fixed.`);
       }
     }
   });
-  const _sfc_main$7 = {
+  const _sfc_main$8 = {
     __name: "login",
     setup(__props, { expose: __expose }) {
       __expose();
       const toastRef = vue.ref(null);
       const link = vue.ref("");
       let isClick = false;
+      const store = useUserStore();
       const handleLogin = async () => {
         if (isClick)
           return;
         isClick = true;
-        if (link.value === "") {
-          toastRef.value.show("请输入设备链接");
-        }
         const d = aesDecrypt(link.value);
-        formatAppLog("log", "at pages/login/login.vue:43", d);
         const info = d.split("#");
         if (info.length !== 3) {
           toastRef.value.show("设备链接无效");
         }
-        const store = useUserStore();
         store.username = info[0];
         store.password = info[1];
         Request.init(info[2]);
@@ -8718,7 +8720,7 @@ This will fail in production if not fixed.`);
         return isClick;
       }, set isClick(v) {
         isClick = v;
-      }, handleLogin, ref: vue.ref, RightToast, get aesDecrypt() {
+      }, store, handleLogin, ref: vue.ref, RightToast, get aesDecrypt() {
         return aesDecrypt;
       }, get aesEncrypt() {
         return aesEncrypt;
@@ -8731,7 +8733,7 @@ This will fail in production if not fixed.`);
       return __returned__;
     }
   };
-  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
       vue.createElementVNode("view", { class: "content" }, [
         vue.withDirectives(vue.createElementVNode(
@@ -8761,7 +8763,7 @@ This will fail in production if not fixed.`);
       ])
     ]);
   }
-  const PagesLoginLogin = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-e4e4508d"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/login/login.vue"]]);
+  const PagesLoginLogin = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-e4e4508d"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/login/login.vue"]]);
   const fontData = [
     {
       "font_class": "arrow-down",
@@ -9412,7 +9414,7 @@ This will fail in production if not fixed.`);
     const reg = /^[0-9]*$/g;
     return typeof val === "number" || reg.test(val) ? val + "px" : val;
   };
-  const _sfc_main$6 = {
+  const _sfc_main$7 = {
     name: "UniIcons",
     emits: ["click"],
     props: {
@@ -9466,7 +9468,7 @@ This will fail in production if not fixed.`);
       }
     }
   };
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "text",
       {
@@ -9481,9 +9483,9 @@ This will fail in production if not fixed.`);
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code_tools/projects/front/flip-card-app/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
-  const _sfc_main$5 = {};
-  function _sfc_render$4(_ctx, _cache) {
+  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code_tools/projects/front/flip-card-app/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
+  const _sfc_main$6 = {};
+  function _sfc_render$5(_ctx, _cache) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "navbar" }, [
       vue.withDirectives(vue.createElementVNode(
@@ -9521,12 +9523,34 @@ This will fail in production if not fixed.`);
       ])
     ]);
   }
-  const TopBar = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-32d0c71d"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/TopBar.vue"]]);
-  const _sfc_main$4 = {
+  const TopBar = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-32d0c71d"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/TopBar.vue"]]);
+  const useDeviceStore = defineStore("device", {
+    state: () => ({
+      model: -1
+    }),
+    actions: {}
+  });
+  const _sfc_main$5 = {
     __name: "home",
     setup(__props, { expose: __expose }) {
       __expose();
+      const api2 = new Request();
+      const userStore = useUserStore();
+      const store = useDeviceStore();
       const activeIndex = vue.ref(0);
+      const toastRef = vue.ref(null);
+      onShow(() => {
+        api2.post("/device/control", {
+          device_id: userStore.username,
+          cmd: "4"
+        }).then((res) => {
+          if (res["code"] === 0) {
+            store.model = Number(res["msg"][0]);
+          } else {
+            toastRef.value.show("获取设别状态失败");
+          }
+        });
+      });
       const btnList = [
         {
           name: "时间",
@@ -9547,6 +9571,9 @@ This will fail in production if not fixed.`);
       ];
       const handleClick = (index) => {
         activeIndex.value = index;
+        uni.reLaunch({
+          url: "/pages/trial/trial"
+        });
         if (index === 2) {
           uni.reLaunch({
             url: "/pages/sendMsg/sendMsg"
@@ -9557,18 +9584,20 @@ This will fail in production if not fixed.`);
           });
         }
       };
-      const openSetting = () => {
-        uni.showToast({
-          title: "打开设置",
-          icon: "none"
-        });
-      };
-      const __returned__ = { activeIndex, btnList, handleClick, openSetting, ref: vue.ref, TopBar, RightToast };
+      const __returned__ = { api: api2, userStore, store, activeIndex, toastRef, btnList, handleClick, ref: vue.ref, TopBar, RightToast, get useDeviceStore() {
+        return useDeviceStore;
+      }, get useUserStore() {
+        return useUserStore;
+      }, get onShow() {
+        return onShow;
+      }, get Request() {
+        return Request;
+      } };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
       vue.createVNode($setup["TopBar"]),
@@ -9580,13 +9609,13 @@ This will fail in production if not fixed.`);
             vue.renderList($setup.btnList, (item, index) => {
               return vue.createElementVNode("view", {
                 key: index,
-                class: vue.normalizeClass(["panel-btn", { active: $setup.activeIndex === index }]),
+                class: vue.normalizeClass(["panel-btn", { active: $setup.activeIndex === $setup.store.model }]),
                 onClick: ($event) => $setup.handleClick(index)
               }, [
                 vue.createVNode(_component_uni_icons, {
                   class: vue.normalizeClass(item.icon),
                   size: "25",
-                  color: $setup.activeIndex === index ? "#fff" : "#666"
+                  color: $setup.activeIndex === $setup.store.model ? "#fff" : "#666"
                 }, null, 8, ["class", "color"]),
                 vue.createElementVNode("span", { style: { "height": "30rpx" } }),
                 vue.createElementVNode(
@@ -9602,10 +9631,106 @@ This will fail in production if not fixed.`);
             /* STABLE_FRAGMENT */
           ))
         ])
+      ]),
+      vue.createVNode(
+        $setup["RightToast"],
+        { ref: "toastRef" },
+        null,
+        512
+        /* NEED_PATCH */
+      )
+    ]);
+  }
+  const PagesHomeHome = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-07e72d3c"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/home/home.vue"]]);
+  const _sfc_main$4 = {
+    __name: "trial",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const total = vue.ref(3);
+      const current = vue.ref(0);
+      const answer = vue.ref("");
+      const expr = vue.ref("");
+      const correct = vue.ref(0);
+      function generate() {
+        const a = Math.floor(Math.random() * 90) + 10;
+        const b = Math.floor(Math.random() * 90) + 10;
+        const isAdd = Math.random() > 0.5;
+        if (isAdd) {
+          expr.value = `${a} + ${b} =`;
+          correct.value = a + b;
+        } else {
+          expr.value = `${a} - ${b} =`;
+          correct.value = a - b;
+        }
+      }
+      function submit() {
+        const val = parseInt(answer.value);
+        if (isNaN(val)) {
+          uni.showToast({ title: "请输入答案", icon: "none" });
+          return;
+        }
+        if (val === correct.value) {
+          if (current.value + 1 >= total.value)
+            ;
+          else {
+            current.value++;
+            answer.value = "";
+            generate();
+          }
+          uni.showToast({ title: "回答正确", icon: "none" });
+        } else {
+          uni.showToast({ title: "答案错误", icon: "none" });
+        }
+      }
+      vue.onMounted(() => {
+        generate();
+      });
+      const __returned__ = { total, current, answer, expr, correct, generate, submit, ref: vue.ref, onMounted: vue.onMounted, TopBar };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("view", { class: "page" }, [
+      vue.createVNode($setup["TopBar"]),
+      vue.createElementVNode("view", { class: "card" }, [
+        vue.createElementVNode(
+          "view",
+          { class: "progress" },
+          vue.toDisplayString($setup.current + 1) + "/" + vue.toDisplayString($setup.total),
+          1
+          /* TEXT */
+        ),
+        vue.createElementVNode(
+          "view",
+          { class: "question" },
+          vue.toDisplayString($setup.expr),
+          1
+          /* TEXT */
+        ),
+        vue.withDirectives(vue.createElementVNode(
+          "input",
+          {
+            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.answer = $event),
+            type: "number",
+            class: "input",
+            placeholder: "输入答案",
+            onConfirm: $setup.submit
+          },
+          null,
+          544
+          /* NEED_HYDRATION, NEED_PATCH */
+        ), [
+          [vue.vModelText, $setup.answer]
+        ]),
+        vue.createElementVNode("button", {
+          class: "btn",
+          onClick: $setup.submit
+        }, "提交答案")
       ])
     ]);
   }
-  const PagesHomeHome = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-07e72d3c"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/home/home.vue"]]);
+  const PagesTrialTrial = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-ba43aec4"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/trial/trial.vue"]]);
   const _sfc_main$3 = {
     __name: "root",
     setup(__props, { expose: __expose }) {
@@ -10220,6 +10345,7 @@ This will fail in production if not fixed.`);
   const PagesCalcGameCalcGame = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__scopeId", "data-v-2ea504a5"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/calcGame/calcGame.vue"]]);
   __definePage("pages/login/login", PagesLoginLogin);
   __definePage("pages/home/home", PagesHomeHome);
+  __definePage("pages/trial/trial", PagesTrialTrial);
   __definePage("pages/root/root", PagesRootRoot);
   __definePage("pages/sendMsg/sendMsg", PagesSendMsgSendMsg);
   __definePage("pages/calcGame/calcGame", PagesCalcGameCalcGame);

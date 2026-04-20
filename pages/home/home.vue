@@ -5,14 +5,15 @@
 		<view class="content">
 			<view class="panel">
 				<view v-for="(item, index) in btnList" :key="index" class="panel-btn"
-					:class="{ active: activeIndex === index }" @click="handleClick(index)">
-					<!-- <uni-icons :type="item.icon" size="36" :color="activeIndex === index ? '#fff' : '#666'" /> -->
-					<uni-icons :class="item.icon" size="25" :color="activeIndex === index ? '#fff' : '#666'" />
+					:class="{ active: activeIndex === store.model }" @click="handleClick(index)">
+					<uni-icons :class="item.icon" size="25" :color="activeIndex === store.model ? '#fff' : '#666'" />
 					<span style="height: 30rpx;"></span>
 					<text>{{ item.name }}</text>
 				</view>
 			</view>
+
 		</view>
+		<RightToast ref="toastRef" />
 
 	</view>
 </template>
@@ -22,10 +23,37 @@
 		ref
 	} from 'vue'
 	import TopBar from '@/components/TopBar.vue'
-		import RightToast from '@/components/RightToast.vue'
+	import RightToast from '@/components/RightToast.vue'
+	import {
+		useDeviceStore
+	} from '@/stores/device'
+	import {
+		useUserStore
+	} from '@/stores/user'
+	import {
+		onShow
+	} from "@dcloudio/uni-app";
+	import Request from '@/utils/request'
+	const api = new Request()
+	const userStore = useUserStore();
+	const store = useDeviceStore()
 
 	const activeIndex = ref(0)
+	const toastRef = ref(null)
+	// 获取当前设备的状态
+	onShow(() => {
+		api.post('/device/control', {
+			device_id: userStore.username,
+			cmd: '4'
+		}).then(res => {
+			if (res['code'] === 0) {
+				store.model = Number(res['msg'][0])
+			} else {
+				toastRef.value.show('获取设别状态失败')
+			}
 
+		})
+	})
 	const btnList = [{
 			name: '时间',
 			icon: 'iconfont icon-time'
@@ -41,25 +69,20 @@
 		},
 
 	]
-
 	const handleClick = (index) => {
 		activeIndex.value = index
-		if(index===2){
+		uni.reLaunch({
+			url: '/pages/trial/trial'
+		})
+		if (index === 2) {
 			uni.reLaunch({
-				url:'/pages/sendMsg/sendMsg'
+				url: '/pages/sendMsg/sendMsg'
 			})
-		}else if(index === 3){
+		} else if (index === 3) {
 			uni.reLaunch({
-				url:'/pages/calcGame/calcGame'
+				url: '/pages/calcGame/calcGame'
 			})
 		}
-	}
-
-	const openSetting = () => {
-		uni.showToast({
-			title: '打开设置',
-			icon: 'none'
-		})
 	}
 </script>
 
