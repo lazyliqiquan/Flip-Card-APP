@@ -564,10 +564,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	
+
 		background: #f0f0f0;
 		border-radius: 0.375rem;
-	
+
 		transition: all 0.15s;
 }
 .icon-btn[data-v-32d0c71d]:active {
@@ -576,131 +576,168 @@
 }
 
 
+	/* 外层 */
+.wrapper[data-v-ed1f1fd3] {
+		position: fixed;
+		top: 5.625rem;
+		right: 0;
+		z-index: 999;
+}
+
+	/* 主体 */
+.toast[data-v-ed1f1fd3] {
+		transform: translateX(100%);
+		transition: transform 0.3s ease;
+}
+
+	/* 显示状态 */
+.toast.show[data-v-ed1f1fd3] {
+		transform: translateX(0);
+}
+
+	/* 内容 */
+.content[data-v-ed1f1fd3] {
+		min-width: 8.125rem;
+		padding: 0.625rem 0.9375rem;
+		background: #333;
+		color: #fff;
+
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		border-top-left-radius: 0.5rem;
+		border-bottom-left-radius: 0.5rem;
+
+		box-shadow: -0.1875rem 0.1875rem 0.625rem rgba(0, 0, 0, 0.2);
+}
+
+	/* 文本 */
+.msg[data-v-ed1f1fd3] {
+		font-size: 0.875rem;
+}
+
+	/* 关闭按钮 */
+.close[data-v-ed1f1fd3] {
+		margin-left: 0.625rem;
+		font-size: 1.0625rem;
+		padding: 0 0.3125rem;
+}
+
+
 .container[data-v-2ea504a5] {
-  padding: 0.9375rem 0.625rem;
+		padding: 0.9375rem 0.625rem;
 }
 
-/* ===== 行 ===== */
+	/* ===== 行 ===== */
 .row[data-v-2ea504a5] {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5625rem;
+		display: flex;
+		align-items: center;
+		margin-bottom: 1.5625rem;
 }
 
-/* ===== 序号 ===== */
+	/* ===== 序号 ===== */
 .index-circle[data-v-2ea504a5] {
-  width: 2.1875rem;
-  height: 2.1875rem;
-  border-radius: 50%;
-  background-color: #e5e5e5;
+		width: 2.1875rem;
+		height: 2.1875rem;
+		border-radius: 50%;
+		background-color: #e5e5e5;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-  font-size: 0.875rem;
+		font-size: 0.875rem;
 }
 
-/* ===== 中间居中 ===== */
+	/* ===== 中间居中 ===== */
 .boxes-wrapper[data-v-2ea504a5] {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+		flex: 1;
+		display: flex;
+		justify-content: center;
 }
 .boxes[data-v-2ea504a5] {
-  display: flex;
+		display: flex;
 }
 
-/* ===== 方框 ===== */
+	/* ===== 方框 ===== */
 .box[data-v-2ea504a5] {
-  width: 3.125rem;
-  height: 3.125rem;
-  margin: 0 0.3125rem;
+		width: 3.125rem;
+		height: 3.125rem;
+		margin: 0 0.3125rem;
 
-  border-radius: 0.625rem;
-  border: 0.0625rem solid #ddd;
-  background-color: #fafafa;
+		border-radius: 0.625rem;
+		border: 0.0625rem solid #ddd;
+		background-color: #fafafa;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-  font-size: 1.125rem;
-  font-weight: 600;
+		font-size: 1.125rem;
+		font-weight: 600;
+}
+.box.active[data-v-2ea504a5] {
+		background: #e5e5e5;
+		color: #fff;
 }
 
-/* ===== 状态 ===== */
-.status[data-v-2ea504a5] {
-  margin-left: 0.625rem;
-  padding: 0.4375rem 0.75rem;
-  border-radius: 0.75rem;
-  font-size: 0.75rem;
-}
-.unsent[data-v-2ea504a5] {
-  background-color: #fff;
-  border: 0.03125rem solid #ccc;
-}
-.sent[data-v-2ea504a5] {
-  background-color: #d9d9d9;
-}
 
-/* ===== 分割线 ===== */
+
+	/* ===== 分割线 ===== */
 .divider[data-v-2ea504a5] {
-  height: 0.0625rem;
-  background-color: #eee;
-  margin: 1.25rem 0;
+		height: 0.0625rem;
+		background-color: #eee;
+		margin: 1.25rem 0;
 }
 
-/* ===== 运算按钮（缩小版） ===== */
+	/* ===== 运算按钮（缩小版） ===== */
 .operator-row[data-v-2ea504a5] {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 0.625rem;
+		display: flex;
+		justify-content: space-around;
+		margin-top: 0.625rem;
 }
 .operator-btn[data-v-2ea504a5] {
-  width: 2.8125rem;
-  height: 2.8125rem;
-  border-radius: 50%;
+		width: 2.8125rem;
+		height: 2.8125rem;
+		border-radius: 50%;
 
-  background-color: #fff;
-  border: 0.0625rem solid #ccc;
+		background-color: #fff;
+		border: 0.0625rem solid #ccc;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-  transition: all 0.15s;
+		transition: all 0.15s;
 }
 .operator-btn.active[data-v-2ea504a5] {
-  background-color: #d9d9d9;
+		background-color: #d9d9d9;
 }
 .operator-btn[data-v-2ea504a5]:active {
-  transform: scale(0.88);
+		transform: scale(0.88);
 }
 .op-text[data-v-2ea504a5] {
-  font-size: 1.0625rem;
-  color: #555;   /* 👉 深灰 */
+		font-size: 1.0625rem;
+		color: #555;
+		/* 👉 深灰 */
+}
+.full-row-btn[data-v-2ea504a5] {
+		width: 100%;
+		height: 3.4375rem;
+		background: #f5f5f5;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s;
 }
 
-/* ===== 底部按钮 ===== */
-.action-row[data-v-2ea504a5] {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 1.5625rem;
+	/* 点击按压效果 */
+.full-row-btn[data-v-2ea504a5]:active {
+		background: #e8e8e8;
+		transform: scale(0.98);
 }
-.action-btn[data-v-2ea504a5] {
-  width: 3.75rem;
-  height: 3.75rem;
-  border-radius: 50%;
-
-  background-color: #d9d9d9;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: all 0.15s;
-}
-.action-btn[data-v-2ea504a5]:active {
-  transform: scale(0.88);
+.btn-text[data-v-2ea504a5] {
+		font-size: 0.875rem;
+		color: #333;
 }

@@ -54,7 +54,7 @@
 	/* 外层 */
 	.wrapper {
 		position: fixed;
-		top: 100rpx;
+		top: 180rpx;
 		right: 0;
 		z-index: 999;
 	}

@@ -37,6 +37,34 @@ if (uni.restoreGlobal) {
 }
 (function(vue) {
   "use strict";
+  const ON_LAUNCH = "onLaunch";
+  const ON_LOAD = "onLoad";
+  function requireNativePlugin(name) {
+    return weex.requireModule(name);
+  }
+  function formatAppLog(type, filename, ...args) {
+    if (uni.__log__) {
+      uni.__log__(type, filename, ...args);
+    } else {
+      console[type].apply(console, [...args, filename]);
+    }
+  }
+  function resolveEasycom(component, easycom) {
+    return typeof component === "string" ? easycom : component;
+  }
+  const createLifeCycleHook = (lifecycle, flag = 0) => (hook, target = vue.getCurrentInstance()) => {
+    !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
+  };
+  const onLaunch = /* @__PURE__ */ createLifeCycleHook(
+    ON_LAUNCH,
+    1
+    /* HookFlags.APP */
+  );
+  const onLoad = /* @__PURE__ */ createLifeCycleHook(
+    ON_LOAD,
+    2
+    /* HookFlags.PAGE */
+  );
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -103,34 +131,6 @@ if (uni.restoreGlobal) {
     ]);
   }
   const RightToast = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-ed1f1fd3"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/RightToast.vue"]]);
-  const ON_SHOW = "onShow";
-  const ON_LAUNCH = "onLaunch";
-  function requireNativePlugin(name) {
-    return weex.requireModule(name);
-  }
-  function formatAppLog(type, filename, ...args) {
-    if (uni.__log__) {
-      uni.__log__(type, filename, ...args);
-    } else {
-      console[type].apply(console, [...args, filename]);
-    }
-  }
-  function resolveEasycom(component, easycom) {
-    return typeof component === "string" ? easycom : component;
-  }
-  const createLifeCycleHook = (lifecycle, flag = 0) => (hook, target = vue.getCurrentInstance()) => {
-    !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
-  };
-  const onShow = /* @__PURE__ */ createLifeCycleHook(
-    ON_SHOW,
-    1 | 2
-    /* HookFlags.PAGE */
-  );
-  const onLaunch = /* @__PURE__ */ createLifeCycleHook(
-    ON_LAUNCH,
-    1
-    /* HookFlags.APP */
-  );
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
   function getDefaultExportFromCjs(x) {
     return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
@@ -2573,15 +2573,15 @@ if (uni.restoreGlobal) {
         }
       })(commonjsGlobal, function(CryptoJS2) {
         /** @preserve
-        				(c) 2012 by Cédric Mesnil. All rights reserved.
+            			(c) 2012 by Cédric Mesnil. All rights reserved.
         
-        				Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+            			Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
         
-        				    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-        				    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+            			    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+            			    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
         
-        				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-        				*/
+            			THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+            			*/
         (function(Math2) {
           var C = CryptoJS2;
           var C_lib = C.lib;
@@ -8586,79 +8586,6 @@ This will fail in production if not fixed.`);
     skipHydrate,
     storeToRefs
   }, Symbol.toStringTag, { value: "Module" }));
-  class LocalStorage {
-    /**
-     * 存储数据
-     * @param {string} key - 键名
-     * @param {string} value - 值（支持对象、数组、字符串等）
-     */
-    set(key, value) {
-      try {
-        const m = aesEncrypt(JSON.stringify(value));
-        localStorage.setItem(key, m);
-        return true;
-      } catch (error) {
-        formatAppLog("error", "at utils/store.js:21", "存储失败：", error);
-        return false;
-      }
-    }
-    /**
-     * 获取数据
-     * @param {string} key - 键名
-     * @param {string} defaultValue - 取不到时返回的默认值
-     * @returns {string}
-     */
-    get(key, defaultValue = "") {
-      try {
-        let item = localStorage.getItem(key);
-        item = aesDecrypt(item);
-        return item ? JSON.parse(item) : defaultValue;
-      } catch (error) {
-        formatAppLog("error", "at utils/store.js:38", "获取失败：", error);
-        return "";
-      }
-    }
-    /**
-     * 删除指定数据
-     * @param {string} key
-     */
-    remove(key) {
-      try {
-        localStorage.removeItem(key);
-        return true;
-      } catch (error) {
-        formatAppLog("error", "at utils/store.js:52", "删除失败：", error);
-        return false;
-      }
-    }
-    /**
-     * 清空所有存储
-     */
-    clear() {
-      try {
-        localStorage.clear();
-        return true;
-      } catch (error) {
-        formatAppLog("error", "at utils/store.js:65", "清空失败：", error);
-        return false;
-      }
-    }
-    /**
-     * 获取所有键名
-     * @returns {string[]}
-     */
-    keys() {
-      return Object.keys(localStorage);
-    }
-    /**
-     * 判断是否存在某个键
-     * @param {string} key
-     * @returns {boolean}
-     */
-    has(key) {
-      return this.get(key) !== null;
-    }
-  }
   const api = new Request();
   const useUserStore = defineStore("user", {
     state: () => ({
@@ -8673,13 +8600,12 @@ This will fail in production if not fixed.`);
           "username": this.username,
           "password": this.password
         }).then((res) => {
-          if (res["code"] === 0) {
-            formatAppLog("log", "at stores/user.js:22", res);
-            const storage = new LocalStorage();
-            storage.set("username", this.username);
-            storage.set("password", this.password);
-            storage.set("url", Request.url);
-            this.isRoot = res["isRoot"];
+          if (res.code === 0) {
+            formatAppLog("log", "at stores/user.js:21", res);
+            uni.setStorageSync("username", this.username);
+            uni.setStorageSync("password", this.password);
+            uni.setStorageSync("url", Request.url);
+            this.isRoot = res.isRoot;
             this.isLogin = true;
             uni.redirectTo({
               url: "/pages/home/home"
@@ -8703,6 +8629,8 @@ This will fail in production if not fixed.`);
           return;
         isClick = true;
         const d = aesDecrypt(link.value);
+        const m = aesEncrypt("liqiquan#liqiquan#http://192.168.1.30:8000");
+        formatAppLog("log", "at pages/login/login.vue:43", m);
         const info = d.split("#");
         if (info.length !== 3) {
           toastRef.value.show("设备链接无效");
@@ -9484,34 +9412,50 @@ This will fail in production if not fixed.`);
     );
   }
   const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code_tools/projects/front/flip-card-app/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
-  const _sfc_main$6 = {};
-  function _sfc_render$5(_ctx, _cache) {
+  const _sfc_main$6 = {
+    __name: "TopBar",
+    props: {
+      isShow: Boolean,
+      iconType: String,
+      title: String
+    },
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const __returned__ = {};
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "navbar" }, [
       vue.withDirectives(vue.createElementVNode(
         "view",
-        {
-          class: "nav-left",
-          onClick: _cache[0] || (_cache[0] = (...args) => _ctx.back && _ctx.back(...args))
-        },
+        { class: "nav-left" },
         [
           vue.createElementVNode("view", { class: "icon-btn" }, [
             vue.createVNode(_component_uni_icons, {
-              type: "back",
+              type: $props.iconType,
               size: "20",
               color: "#333"
-            })
+            }, null, 8, ["type"])
           ])
         ],
         512
         /* NEED_PATCH */
       ), [
-        [vue.vShow, true]
+        [vue.vShow, $props.isShow]
       ]),
-      vue.createElementVNode("view", { class: "nav-title" }, "设备控制"),
+      vue.createElementVNode(
+        "view",
+        { class: "nav-title" },
+        vue.toDisplayString($props.title),
+        1
+        /* TEXT */
+      ),
       vue.createElementVNode("view", {
         class: "nav-right",
-        onClick: _cache[1] || (_cache[1] = (...args) => _ctx.openSetting && _ctx.openSetting(...args))
+        onClick: _cache[0] || (_cache[0] = (...args) => _ctx.openSetting && _ctx.openSetting(...args))
       }, [
         vue.createElementVNode("view", { class: "icon-btn" }, [
           vue.createVNode(_component_uni_icons, {
@@ -9526,30 +9470,45 @@ This will fail in production if not fixed.`);
   const TopBar = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-32d0c71d"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/TopBar.vue"]]);
   const useDeviceStore = defineStore("device", {
     state: () => ({
-      model: -1
+      model: -1,
+      futureModel: -1,
+      isSucceed: true,
+      codeList: ["", "", "", "", ""]
     }),
-    actions: {}
+    actions: {
+      async control(cmd) {
+        this.isSucceed = false;
+        const api2 = new Request();
+        const userStore = useUserStore();
+        await api2.post("/device/control", {
+          device_id: userStore.username,
+          cmd
+        }).then((res) => {
+          formatAppLog("log", "at stores/device.js:25", res);
+          if (res.code === 0) {
+            this.isSucceed = true;
+            this.model = Number(res.msg[0]);
+            formatAppLog("log", "at stores/device.js:29", this.model);
+          }
+        });
+      }
+    }
   });
   const _sfc_main$5 = {
     __name: "home",
     setup(__props, { expose: __expose }) {
       __expose();
-      const api2 = new Request();
-      const userStore = useUserStore();
       const store = useDeviceStore();
-      const activeIndex = vue.ref(0);
+      const userStore = useUserStore();
       const toastRef = vue.ref(null);
-      onShow(() => {
-        api2.post("/device/control", {
-          device_id: userStore.username,
-          cmd: "4"
-        }).then((res) => {
-          if (res["code"] === 0) {
-            store.model = Number(res["msg"][0]);
-          } else {
-            toastRef.value.show("获取设别状态失败");
-          }
-        });
+      onLoad(async () => {
+        if (store.model !== -1) {
+          return;
+        }
+        await store.control("4");
+        if (!store.isSucceed) {
+          toastRef.value.show("查询设备状态失败，请检查设备连接是否正常");
+        }
       });
       const btnList = [
         {
@@ -9563,33 +9522,24 @@ This will fail in production if not fixed.`);
         {
           name: "文本",
           icon: "iconfont icon-msg"
-        },
-        {
-          name: "算术",
-          icon: "iconfont icon-jisuan"
         }
+        // {
+        // 	name: '算术',
+        // 	icon: 'iconfont icon-jisuan'
+        // },
       ];
       const handleClick = (index) => {
-        activeIndex.value = index;
+        store.futureModel = index;
         uni.reLaunch({
-          url: "/pages/trial/trial"
+          url: `/pages/trial/trial`
         });
-        if (index === 2) {
-          uni.reLaunch({
-            url: "/pages/sendMsg/sendMsg"
-          });
-        } else if (index === 3) {
-          uni.reLaunch({
-            url: "/pages/calcGame/calcGame"
-          });
-        }
       };
-      const __returned__ = { api: api2, userStore, store, activeIndex, toastRef, btnList, handleClick, ref: vue.ref, TopBar, RightToast, get useDeviceStore() {
+      const __returned__ = { store, userStore, toastRef, btnList, handleClick, ref: vue.ref, TopBar, RightToast, get useDeviceStore() {
         return useDeviceStore;
       }, get useUserStore() {
         return useUserStore;
-      }, get onShow() {
-        return onShow;
+      }, get onLoad() {
+        return onLoad;
       }, get Request() {
         return Request;
       } };
@@ -9600,7 +9550,11 @@ This will fail in production if not fixed.`);
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
-      vue.createVNode($setup["TopBar"]),
+      vue.createVNode($setup["TopBar"], {
+        isShow: $setup.userStore.isRoot,
+        iconType: "contact",
+        title: "设备控制"
+      }, null, 8, ["isShow"]),
       vue.createElementVNode("view", { class: "content" }, [
         vue.createElementVNode("view", { class: "panel" }, [
           (vue.openBlock(), vue.createElementBlock(
@@ -9609,13 +9563,13 @@ This will fail in production if not fixed.`);
             vue.renderList($setup.btnList, (item, index) => {
               return vue.createElementVNode("view", {
                 key: index,
-                class: vue.normalizeClass(["panel-btn", { active: $setup.activeIndex === $setup.store.model }]),
+                class: vue.normalizeClass(["panel-btn", { active: index === $setup.store.model }]),
                 onClick: ($event) => $setup.handleClick(index)
               }, [
                 vue.createVNode(_component_uni_icons, {
                   class: vue.normalizeClass(item.icon),
                   size: "25",
-                  color: $setup.activeIndex === $setup.store.model ? "#fff" : "#666"
+                  color: index === $setup.store.model ? "#fff" : "#666"
                 }, null, 8, ["class", "color"]),
                 vue.createElementVNode("span", { style: { "height": "30rpx" } }),
                 vue.createElementVNode(
@@ -9646,89 +9600,136 @@ This will fail in production if not fixed.`);
     __name: "trial",
     setup(__props, { expose: __expose }) {
       __expose();
-      const total = vue.ref(3);
       const current = vue.ref(0);
       const answer = vue.ref("");
       const expr = vue.ref("");
       const correct = vue.ref(0);
+      const toastRef = vue.ref(null);
+      const store = useDeviceStore();
+      function back() {
+        uni.reLaunch({
+          url: "/pages/home/home"
+        });
+      }
       function generate() {
         const a = Math.floor(Math.random() * 90) + 10;
         const b = Math.floor(Math.random() * 90) + 10;
-        const isAdd = Math.random() > 0.5;
-        if (isAdd) {
-          expr.value = `${a} + ${b} =`;
-          correct.value = a + b;
-        } else {
-          expr.value = `${a} - ${b} =`;
-          correct.value = a - b;
-        }
+        expr.value = `${a} + ${b} =`;
+        correct.value = a + b;
       }
-      function submit() {
+      const submit = async () => {
         const val = parseInt(answer.value);
         if (isNaN(val)) {
-          uni.showToast({ title: "请输入答案", icon: "none" });
+          uni.showToast({
+            title: "请输入答案",
+            icon: "none"
+          });
           return;
         }
         if (val === correct.value) {
-          if (current.value + 1 >= total.value)
-            ;
-          else {
+          if (current.value + 1 >= 1) {
+            if (store.futureModel <= 1) {
+              await store.control(store.futureModel.toString());
+              if (!store.isSucceed) {
+                toastRef.value.show("查询设备状态失败，请检查设备连接是否正常");
+              }
+              back();
+            } else if (store.futureModel == 2) {
+              if (store.model === store.futureModel) {
+                await store.control("2" + store.codeList.join(""));
+                toastRef.value.show(store.isSucceed ? "发送成功" : "发送失败");
+              }
+              uni.reLaunch({
+                url: "/pages/sendMsg/sendMsg"
+              });
+            } else {
+              uni.reLaunch({
+                url: "/pages/calcGame/calcGame"
+              });
+            }
+          } else {
             current.value++;
             answer.value = "";
             generate();
           }
-          uni.showToast({ title: "回答正确", icon: "none" });
+          uni.showToast({
+            title: "回答正确",
+            icon: "none"
+          });
         } else {
-          uni.showToast({ title: "答案错误", icon: "none" });
+          uni.showToast({
+            title: "答案错误",
+            icon: "none"
+          });
         }
-      }
+      };
       vue.onMounted(() => {
         generate();
       });
-      const __returned__ = { total, current, answer, expr, correct, generate, submit, ref: vue.ref, onMounted: vue.onMounted, TopBar };
+      const __returned__ = { current, answer, expr, correct, toastRef, store, back, generate, submit, ref: vue.ref, onMounted: vue.onMounted, get useDeviceStore() {
+        return useDeviceStore;
+      }, TopBar, RightToast };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("view", { class: "page" }, [
-      vue.createVNode($setup["TopBar"]),
-      vue.createElementVNode("view", { class: "card" }, [
-        vue.createElementVNode(
-          "view",
-          { class: "progress" },
-          vue.toDisplayString($setup.current + 1) + "/" + vue.toDisplayString($setup.total),
-          1
-          /* TEXT */
-        ),
-        vue.createElementVNode(
-          "view",
-          { class: "question" },
-          vue.toDisplayString($setup.expr),
-          1
-          /* TEXT */
-        ),
-        vue.withDirectives(vue.createElementVNode(
-          "input",
-          {
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.answer = $event),
-            type: "number",
-            class: "input",
-            placeholder: "输入答案",
-            onConfirm: $setup.submit
-          },
-          null,
-          544
-          /* NEED_HYDRATION, NEED_PATCH */
-        ), [
-          [vue.vModelText, $setup.answer]
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createVNode($setup["TopBar"], {
+          isShow: true,
+          iconType: "back",
+          title: "验证非人机",
+          onClick: $setup.back
+        }),
+        vue.createElementVNode("view", { class: "card" }, [
+          vue.createElementVNode(
+            "view",
+            { class: "progress" },
+            vue.toDisplayString($setup.current + 1) + "/" + vue.toDisplayString(3),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode(
+            "view",
+            { class: "question" },
+            vue.toDisplayString($setup.expr),
+            1
+            /* TEXT */
+          ),
+          vue.withDirectives(vue.createElementVNode(
+            "input",
+            {
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.answer = $event),
+              type: "number",
+              class: "input",
+              placeholder: "输入答案",
+              onConfirm: $setup.submit
+            },
+            null,
+            544
+            /* NEED_HYDRATION, NEED_PATCH */
+          ), [
+            [vue.vModelText, $setup.answer]
+          ]),
+          vue.createElementVNode("button", {
+            class: "btn",
+            onClick: $setup.submit
+          }, "提交答案")
         ]),
-        vue.createElementVNode("button", {
-          class: "btn",
-          onClick: $setup.submit
-        }, "提交答案")
-      ])
-    ]);
+        vue.createVNode(
+          $setup["RightToast"],
+          { ref: "toastRef" },
+          null,
+          512
+          /* NEED_PATCH */
+        )
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
   }
   const PagesTrialTrial = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-ba43aec4"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/trial/trial.vue"]]);
   const _sfc_main$3 = {
@@ -9964,37 +9965,104 @@ This will fail in production if not fixed.`);
     __name: "sendMsg",
     setup(__props, { expose: __expose }) {
       __expose();
-      const codeList = vue.ref(["", "", "", "", ""]);
+      const store = useDeviceStore();
+      const toastRef = vue.ref(null);
+      const codeList = vue.ref([" ", " ", " ", " ", " "]);
       const currentIndex = vue.ref(0);
       const row1 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
       const row2 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
       const row3 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
       const row4 = [
-        { value: "Z", type: "normal" },
-        { value: "X", type: "normal" },
-        { value: "C", type: "normal" },
-        { value: "V", type: "normal" },
-        { value: "B", type: "normal" },
-        { value: "N", type: "normal" },
-        { value: "M", type: "normal" },
-        { value: "del", type: "delete" }
+        {
+          value: "Z",
+          type: "normal"
+        },
+        {
+          value: "X",
+          type: "normal"
+        },
+        {
+          value: "C",
+          type: "normal"
+        },
+        {
+          value: "V",
+          type: "normal"
+        },
+        {
+          value: "B",
+          type: "normal"
+        },
+        {
+          value: "N",
+          type: "normal"
+        },
+        {
+          value: "M",
+          type: "normal"
+        },
+        {
+          value: "del",
+          type: "delete"
+        }
       ];
       const row5 = [
-        { value: "+", type: "normal" },
-        { value: "-", type: "normal" },
-        { value: "/", type: "normal" },
-        { value: "?", type: "normal" },
-        { value: " ", type: "space" },
-        { value: "!", type: "normal" },
-        { value: "@", type: "normal" },
-        { value: ":", type: "normal" },
-        { value: "♡", type: "heart" }
+        {
+          value: "+",
+          type: "normal"
+        },
+        {
+          value: "-",
+          type: "normal"
+        },
+        {
+          value: "/",
+          type: "normal"
+        },
+        {
+          value: "?",
+          type: "normal"
+        },
+        {
+          value: " ",
+          type: "space"
+        },
+        {
+          value: "!",
+          type: "normal"
+        },
+        {
+          value: "@",
+          type: "normal"
+        },
+        {
+          value: ":",
+          type: "normal"
+        },
+        {
+          value: "♡",
+          type: "heart"
+        }
       ];
-      const onSend = () => {
-        formatAppLog("log", "at pages/sendMsg/sendMsg.vue:122", "发送");
+      function back() {
+        uni.reLaunch({
+          url: "/pages/home/home"
+        });
+      }
+      let flag = false;
+      const onSend = async () => {
+        if (flag) {
+          return;
+        }
+        store.codeList = codeList;
+        uni.reLaunch({
+          url: `/pages/trial/trial`
+        });
       };
       const vibrate = () => {
-        uni.vibrateShort({ type: "light" });
+        uni.vibrateShort({
+          type: "light"
+        });
       };
       const input = (val) => {
         vibrate();
@@ -10018,7 +10086,13 @@ This will fail in production if not fixed.`);
       const setFocus = (i) => {
         currentIndex.value = i;
       };
-      const __returned__ = { codeList, currentIndex, row1, row2, row3, row4, row5, onSend, vibrate, input, handleSpecial, setFocus, ref: vue.ref, TopBar, RightToast };
+      const __returned__ = { store, toastRef, codeList, currentIndex, row1, row2, row3, row4, row5, back, get flag() {
+        return flag;
+      }, set flag(v) {
+        flag = v;
+      }, onSend, vibrate, input, handleSpecial, setFocus, ref: vue.ref, TopBar, RightToast, get useDeviceStore() {
+        return useDeviceStore;
+      } };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
@@ -10026,7 +10100,12 @@ This will fail in production if not fixed.`);
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
-      vue.createVNode($setup["TopBar"]),
+      vue.createVNode($setup["TopBar"], {
+        isShow: true,
+        iconType: "back",
+        title: "发送文本",
+        onClick: $setup.back
+      }),
       vue.createElementVNode("view", { class: "code-box" }, [
         (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
@@ -10200,7 +10279,14 @@ This will fail in production if not fixed.`);
             /* STABLE_FRAGMENT */
           ))
         ])
-      ])
+      ]),
+      vue.createVNode(
+        $setup["RightToast"],
+        { ref: "toastRef" },
+        null,
+        512
+        /* NEED_PATCH */
+      )
     ]);
   }
   const PagesSendMsgSendMsg = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$1], ["__scopeId", "data-v-9b644b6d"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/sendMsg/sendMsg.vue"]]);
@@ -10208,43 +10294,217 @@ This will fail in production if not fixed.`);
     __name: "calcGame",
     setup(__props, { expose: __expose }) {
       __expose();
+      const store = useDeviceStore();
+      const toastRef = vue.ref(null);
+      function back() {
+        uni.reLaunch({
+          url: "/pages/home/home"
+        });
+      }
       const rows = vue.ref([
-        { values: ["9", "0", "-", "8", "0"], sent: false },
-        { values: ["", "", "", "", ""], sent: false },
-        { values: ["", "", "", "", ""], sent: false }
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""]
+      ]);
+      const result = vue.ref([
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""]
       ]);
       const operators = vue.ref([
-        { label: "+", value: "add", active: false },
-        { label: "-", value: "sub", active: false },
-        { label: "×", value: "mul", active: false },
-        { label: "/", value: "div", active: false }
+        {
+          label: "+",
+          value: "add",
+          active: true
+        },
+        {
+          label: "-",
+          value: "sub",
+          active: true
+        },
+        {
+          label: "*",
+          value: "mul",
+          active: true
+        },
+        {
+          label: "/",
+          value: "div",
+          active: true
+        }
       ]);
+      function getRandItem(arr) {
+        let idx = Math.floor(Math.random() * arr.length);
+        return arr[idx];
+      }
+      function createExpr(op) {
+        const maxChar = 5;
+        let a, b, expr, res;
+        while (true) {
+          const getNum = () => Math.floor(Math.random() * 999) + 1;
+          if (op === "+") {
+            a = getNum();
+            b = getNum();
+            res = a + b;
+          } else if (op === "-") {
+            a = getNum();
+            b = getNum();
+            res = a - b;
+          } else if (op === "*") {
+            a = getNum();
+            b = getNum();
+            res = a * b;
+          } else if (op === "/") {
+            let quotient = getNum();
+            b = getNum();
+            a = quotient * b;
+            res = quotient;
+          }
+          expr = `${a}${op}${b}`;
+          if (expr.length > maxChar) {
+            continue;
+          }
+          if (String(res).length > maxChar) {
+            continue;
+          }
+          break;
+        }
+        let arr = [];
+        let charArr = expr.split("");
+        while (charArr.length < 5) {
+          charArr.unshift(" ");
+        }
+        arr.push(charArr);
+        charArr = String(res).split("");
+        while (charArr.length < 5) {
+          charArr.unshift(" ");
+        }
+        arr.push(charArr);
+        return arr;
+      }
+      function refresh() {
+        const arr = [];
+        operators.value.forEach((e, i) => {
+          if (e.active) {
+            arr.push(e.label);
+          }
+        });
+        for (let i = 0; i < 3; i++) {
+          const e = getRandItem(arr);
+          let a = createExpr(e);
+          rows.value[i] = a[0];
+          result.value[i] = a[1];
+        }
+        formatAppLog("log", "at pages/calcGame/calcGame.vue:171", rows.value, result.value);
+      }
       const toggleOperator = (op) => {
         op.active = !op.active;
-      };
-      const refresh = () => {
-        rows.value.forEach((row) => {
-          row.values = ["", "", "", "", ""];
-          row.sent = false;
+        let flag2 = true;
+        operators.value.forEach((e, i) => {
+          if (e.active) {
+            flag2 = false;
+          }
         });
+        if (flag2) {
+          toastRef.value.show("算式种类不能为空");
+          op.active = !op.active;
+        } else {
+          refresh();
+        }
       };
-      const send = () => {
-        rows.value.forEach((row) => {
-          row.sent = true;
-        });
-      };
-      const __returned__ = { rows, operators, toggleOperator, refresh, send, ref: vue.ref, TopBar };
+      vue.onMounted(() => {
+        refresh();
+      });
+      let current_row = vue.ref(-1);
+      let current_column = vue.ref(0);
+      let timer;
+      let flag = false;
+      async function send() {
+        if (flag) {
+          toastRef.value.show("当前算式正在发送中");
+          return;
+        }
+        flag = true;
+        current_row.value = -1;
+        let timer_column2 = setInterval(() => {
+          current_column.value = (current_column.value + 1) % 5;
+        }, 900);
+        setTimeout(() => {
+          clearInterval(timer_column2);
+          flag = false;
+        }, 75e3);
+        let i = -1;
+        async function func() {
+          i++;
+          let timer_temp = setTimeout(async () => {
+            await store.control("3" + result.value[i].join("").toString());
+            if (!store.isSucceed) {
+              toastRef.value.show(`发送算式${i}答案失败`);
+              current_row.value = -1;
+              clearInterval(timer);
+              clearTimeout(timer_temp);
+              return;
+            }
+          }, 15e3);
+          current_row.value = i;
+          current_column.value = 0;
+          await store.control("3" + rows.value[i].join("").toString());
+          if (!store.isSucceed) {
+            toastRef.value.show(`发送算式${i}失败`);
+            current_row.value = -1;
+            clearInterval(timer);
+            clearTimeout(timer_temp);
+            return;
+          }
+          if (i >= 2) {
+            current_row.value = -1;
+            clearInterval(timer);
+            return;
+          }
+        }
+        await func();
+        timer = setInterval(async () => {
+          await func();
+        }, 25e3);
+      }
+      vue.onUnmounted(() => {
+        clearInterval(timer);
+        clearInterval(timer_column);
+      });
+      const __returned__ = { store, toastRef, back, rows, result, operators, getRandItem, createExpr, refresh, toggleOperator, get current_row() {
+        return current_row;
+      }, set current_row(v) {
+        current_row = v;
+      }, get current_column() {
+        return current_column;
+      }, set current_column(v) {
+        current_column = v;
+      }, get timer() {
+        return timer;
+      }, set timer(v) {
+        timer = v;
+      }, get flag() {
+        return flag;
+      }, set flag(v) {
+        flag = v;
+      }, send, ref: vue.ref, onMounted: vue.onMounted, onUnmounted: vue.onUnmounted, TopBar, RightToast, get useDeviceStore() {
+        return useDeviceStore;
+      } };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
       [
-        vue.createVNode($setup["TopBar"]),
+        vue.createVNode($setup["TopBar"], {
+          isShow: true,
+          iconType: "back",
+          title: "小学生时间",
+          onClick: $setup.back
+        }),
         vue.createElementVNode("view", { class: "container" }, [
           (vue.openBlock(true), vue.createElementBlock(
             vue.Fragment,
@@ -10259,32 +10519,23 @@ This will fail in production if not fixed.`);
                     (vue.openBlock(true), vue.createElementBlock(
                       vue.Fragment,
                       null,
-                      vue.renderList(item.values, (box, i) => {
+                      vue.renderList(item, (box, i) => {
                         return vue.openBlock(), vue.createElementBlock(
                           "view",
                           {
                             key: i,
-                            class: "box"
+                            class: vue.normalizeClass(["box", { active: index === $setup.current_row && i === $setup.current_column }])
                           },
                           vue.toDisplayString(box),
-                          1
-                          /* TEXT */
+                          3
+                          /* TEXT, CLASS */
                         );
                       }),
                       128
                       /* KEYED_FRAGMENT */
                     ))
                   ])
-                ]),
-                vue.createElementVNode(
-                  "view",
-                  {
-                    class: vue.normalizeClass(["status", item.sent ? "sent" : "unsent"])
-                  },
-                  vue.toDisplayString(item.sent ? "ED" : "ING"),
-                  3
-                  /* TEXT, CLASS */
-                )
+                ])
               ]);
             }),
             128
@@ -10314,28 +10565,20 @@ This will fail in production if not fixed.`);
               /* KEYED_FRAGMENT */
             ))
           ]),
-          vue.createElementVNode("view", { class: "action-row" }, [
-            vue.createElementVNode("view", {
-              class: "action-btn",
-              onClick: $setup.refresh
-            }, [
-              vue.createVNode(_component_uni_icons, {
-                type: "refreshempty",
-                size: "36",
-                color: "#555"
-              })
-            ]),
-            vue.createElementVNode("view", {
-              class: "action-btn",
-              onClick: $setup.send
-            }, [
-              vue.createVNode(_component_uni_icons, {
-                type: "paperplane",
-                size: "36",
-                color: "#555"
-              })
-            ])
-          ])
+          vue.createElementVNode("view", { class: "divider" }),
+          vue.createElementVNode("view", {
+            class: "full-row-btn",
+            onClick: $setup.send
+          }, [
+            vue.createElementVNode("text", { class: "btn-text" }, "开始")
+          ]),
+          vue.createVNode(
+            $setup["RightToast"],
+            { ref: "toastRef" },
+            null,
+            512
+            /* NEED_PATCH */
+          )
         ])
       ],
       64
@@ -10353,24 +10596,19 @@ This will fail in production if not fixed.`);
     __name: "App",
     setup(__props, { expose: __expose }) {
       __expose();
-      onLaunch(() => {
-        formatAppLog("log", "at App.vue:11", "APP启动成功");
+      onLaunch(async () => {
+        formatAppLog("log", "at App.vue:16", "APP启动成功");
         const store = useUserStore();
-        const storage = new LocalStorage();
-        const username = storage.get("username");
-        const password = storage.get("password");
-        const url = storage.get("url");
+        store.username = uni.getStorageSync("username");
+        store.password = uni.getStorageSync("password");
+        const url = uni.getStorageSync("url");
         Request.init(url);
-        store.username = username;
-        store.password = password;
-        store.login();
+        await store.login();
       });
       const __returned__ = { get onLaunch() {
         return onLaunch;
       }, get useUserStore() {
         return useUserStore;
-      }, get LocalStorage() {
-        return LocalStorage;
       }, get Request() {
         return Request;
       } };

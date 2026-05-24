@@ -39,9 +39,10 @@
 		isClick = true
 		const d = aesDecrypt(link.value)
 		// console.log(d)
-		// const m = aesEncrypt('lqq#lqq#http://192.168.1.30:8000')
-		// console.log(m)
+		const m = aesEncrypt('liqiquan#liqiquan#http://192.168.1.30:8000')
+		console.log(m)
 		// P2VJAxR4eflv+wJD0xovnsOnA526bvA7KKCb7MjG9LPLR31OL5FML7XNkCqwx+UE
+		// 1wU7uS1nHn4GhOxkDgvJhY6YWuxqvHk95dX8JgEG+KW3W78jNclumZ84RPRvfB0J
 		const info = d.split('#')
 		if (info.length !== 3) {
 			toastRef.value.show('设备链接无效')

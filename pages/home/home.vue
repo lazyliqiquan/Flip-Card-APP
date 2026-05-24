@@ -1,12 +1,12 @@
 <template>
 	<view class="container">
-		<TopBar></TopBar>
+		<TopBar :isShow="userStore.isRoot" iconType="contact" title='设备控制'></TopBar>
 		<!-- 中央按钮区域 -->
 		<view class="content">
 			<view class="panel">
 				<view v-for="(item, index) in btnList" :key="index" class="panel-btn"
-					:class="{ active: activeIndex === store.model }" @click="handleClick(index)">
-					<uni-icons :class="item.icon" size="25" :color="activeIndex === store.model ? '#fff' : '#666'" />
+					:class="{ active: index === store.model }" @click="handleClick(index)">
+					<uni-icons :class="item.icon" size="25" :color="index === store.model ? '#fff' : '#666'" />
 					<span style="height: 30rpx;"></span>
 					<text>{{ item.name }}</text>
 				</view>
@@ -29,31 +29,27 @@
 	} from '@/stores/device'
 	import {
 		useUserStore
-	} from '@/stores/user'
+	} from '@/stores/user.js'
+
 	import {
-		onShow
+		onLoad
 	} from "@dcloudio/uni-app";
 	import Request from '@/utils/request'
-	const api = new Request()
-	const userStore = useUserStore();
-	const store = useDeviceStore()
 
-	const activeIndex = ref(0)
+	const store = useDeviceStore()
+	const userStore = useUserStore()
 	const toastRef = ref(null)
 	// 获取当前设备的状态
-	onShow(() => {
-		api.post('/device/control', {
-			device_id: userStore.username,
-			cmd: '4'
-		}).then(res => {
-			if (res['code'] === 0) {
-				store.model = Number(res['msg'][0])
-			} else {
-				toastRef.value.show('获取设别状态失败')
-			}
-
-		})
+	onLoad(async () => {
+		if (store.model !== -1) {
+			return
+		}
+		await store.control('4')
+		if (!store.isSucceed) {
+			toastRef.value.show('查询设备状态失败，请检查设备连接是否正常')
+		}
 	})
+
 	const btnList = [{
 			name: '时间',
 			icon: 'iconfont icon-time'
@@ -63,26 +59,27 @@
 		}, {
 			name: '文本',
 			icon: 'iconfont icon-msg'
-		}, {
-			name: '算术',
-			icon: 'iconfont icon-jisuan'
 		},
+		// {
+		// 	name: '算术',
+		// 	icon: 'iconfont icon-jisuan'
+		// },
 
 	]
 	const handleClick = (index) => {
-		activeIndex.value = index
+		store.futureModel = index
 		uni.reLaunch({
-			url: '/pages/trial/trial'
+			url: `/pages/trial/trial`
 		})
-		if (index === 2) {
-			uni.reLaunch({
-				url: '/pages/sendMsg/sendMsg'
-			})
-		} else if (index === 3) {
-			uni.reLaunch({
-				url: '/pages/calcGame/calcGame'
-			})
-		}
+		// if (index === 2) {
+		// 	uni.reLaunch({
+		// 		url: '/pages/sendMsg/sendMsg'
+		// 	})
+		// } else if (index === 3) {
+		// 	uni.reLaunch({
+		// 		url: '/pages/calcGame/calcGame'
+		// 	})
+		// }
 	}
 </script>
 
@@ -129,6 +126,12 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 20rpx;
+	}
+
+	/* 最后一个子项单独居中 */
+	.panel> :last-child {
+		grid-column: 1 / -1;
+		/* justify-self: center; */
 	}
 
 	/* ✅ 正方形按钮（唯一关键点） */

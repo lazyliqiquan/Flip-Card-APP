@@ -564,10 +564,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	
+
 		background: #f0f0f0;
 		border-radius: 0.375rem;
-	
+
 		transition: all 0.15s;
 }
 .icon-btn[data-v-32d0c71d]:active {
@@ -579,7 +579,7 @@
 	/* 外层 */
 .wrapper[data-v-ed1f1fd3] {
 		position: fixed;
-		top: 3.125rem;
+		top: 5.625rem;
 		right: 0;
 		z-index: 999;
 }
@@ -666,6 +666,12 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 0.625rem;
+}
+
+	/* 最后一个子项单独居中 */
+.panel[data-v-07e72d3c]> :last-child {
+		grid-column: 1 / -1;
+		/* justify-self: center; */
 }
 
 	/* ✅ 正方形按钮（唯一关键点） */
