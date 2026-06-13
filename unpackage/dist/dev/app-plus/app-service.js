@@ -37,34 +37,6 @@ if (uni.restoreGlobal) {
 }
 (function(vue) {
   "use strict";
-  const ON_LAUNCH = "onLaunch";
-  const ON_LOAD = "onLoad";
-  function requireNativePlugin(name) {
-    return weex.requireModule(name);
-  }
-  function formatAppLog(type, filename, ...args) {
-    if (uni.__log__) {
-      uni.__log__(type, filename, ...args);
-    } else {
-      console[type].apply(console, [...args, filename]);
-    }
-  }
-  function resolveEasycom(component, easycom) {
-    return typeof component === "string" ? easycom : component;
-  }
-  const createLifeCycleHook = (lifecycle, flag = 0) => (hook, target = vue.getCurrentInstance()) => {
-    !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
-  };
-  const onLaunch = /* @__PURE__ */ createLifeCycleHook(
-    ON_LAUNCH,
-    1
-    /* HookFlags.APP */
-  );
-  const onLoad = /* @__PURE__ */ createLifeCycleHook(
-    ON_LOAD,
-    2
-    /* HookFlags.PAGE */
-  );
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -72,7 +44,7 @@ if (uni.restoreGlobal) {
     }
     return target;
   };
-  const _sfc_main$9 = {
+  const _sfc_main$a = {
     __name: "RightToast",
     setup(__props, { expose: __expose }) {
       const visible = vue.ref(false);
@@ -103,7 +75,7 @@ if (uni.restoreGlobal) {
       return __returned__;
     }
   };
-  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "wrapper" }, [
       vue.createElementVNode(
         "view",
@@ -130,7 +102,35 @@ if (uni.restoreGlobal) {
       )
     ]);
   }
-  const RightToast = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-ed1f1fd3"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/RightToast.vue"]]);
+  const RightToast = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$9], ["__scopeId", "data-v-ed1f1fd3"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/RightToast.vue"]]);
+  const ON_LAUNCH = "onLaunch";
+  const ON_LOAD = "onLoad";
+  function requireNativePlugin(name) {
+    return weex.requireModule(name);
+  }
+  function formatAppLog(type, filename, ...args) {
+    if (uni.__log__) {
+      uni.__log__(type, filename, ...args);
+    } else {
+      console[type].apply(console, [...args, filename]);
+    }
+  }
+  function resolveEasycom(component, easycom) {
+    return typeof component === "string" ? easycom : component;
+  }
+  const createLifeCycleHook = (lifecycle, flag = 0) => (hook, target = vue.getCurrentInstance()) => {
+    !vue.isInSSRComponentSetup && vue.injectHook(lifecycle, hook, target);
+  };
+  const onLaunch = /* @__PURE__ */ createLifeCycleHook(
+    ON_LAUNCH,
+    1
+    /* HookFlags.APP */
+  );
+  const onLoad = /* @__PURE__ */ createLifeCycleHook(
+    ON_LOAD,
+    2
+    /* HookFlags.PAGE */
+  );
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
   function getDefaultExportFromCjs(x) {
     return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
@@ -2573,15 +2573,15 @@ if (uni.restoreGlobal) {
         }
       })(commonjsGlobal, function(CryptoJS2) {
         /** @preserve
-            			(c) 2012 by Cédric Mesnil. All rights reserved.
+        				(c) 2012 by Cédric Mesnil. All rights reserved.
         
-            			Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+        				Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
         
-            			    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-            			    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+        				    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+        				    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
         
-            			THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-            			*/
+        				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        				*/
         (function(Math2) {
           var C = CryptoJS2;
           var C_lib = C.lib;
@@ -8590,33 +8590,76 @@ This will fail in production if not fixed.`);
   const useUserStore = defineStore("user", {
     state: () => ({
       username: "",
-      password: "",
       isRoot: false,
-      isLogin: false
+      isSucceed: false,
+      singleUser: [],
+      user_list: []
     }),
     actions: {
+      // =============登陆======================
       async login() {
-        api.post("/user/login", {
-          "username": this.username,
-          "password": this.password
+        this.isSucceed = false;
+        await api.post("/user/login", {
+          "username": this.username
         }).then((res) => {
           if (res.code === 0) {
-            formatAppLog("log", "at stores/user.js:21", res);
+            formatAppLog("log", "at stores/user.js:23", res);
             uni.setStorageSync("username", this.username);
-            uni.setStorageSync("password", this.password);
             uni.setStorageSync("url", Request.url);
             this.isRoot = res.isRoot;
-            this.isLogin = true;
-            uni.redirectTo({
+            uni.reLaunch({
               url: "/pages/home/home"
             });
-            return true;
+          }
+        });
+      },
+      // =============创建用户======================
+      async createUser(username) {
+        this.isSucceed = false;
+        await api.post("/user/create", {
+          "username": username
+        }).then((res) => {
+          if (res.code === 0) {
+            formatAppLog("log", "at stores/user.js:41", res);
+            this.isSucceed = true;
+          }
+        });
+      },
+      // ===========获取指定用户信息=============
+      async getUserInfo(username) {
+        this.isSucceed = false;
+        await api.get(`/user/info/${username}`).then((res) => {
+          if (res.code === 0) {
+            formatAppLog("log", "at stores/user.js:51", res);
+            this.singleUser = res.user_info ? [res.user_info] : [];
+            this.isSucceed = true;
+          }
+        });
+      },
+      // ============删除指定用户=================
+      async deleteUser(username) {
+        this.isSucceed = false;
+        await api.get(`/user/delete/${username}`).then((res) => {
+          if (res.code === 0) {
+            this.isSucceed = true;
+          }
+        });
+      },
+      // =================获取所有用户信息==============
+      async getAllUsers() {
+        this.isSucceed = false;
+        await api.get("/user/all").then((res) => {
+          if (res.code === 0) {
+            formatAppLog("log", "at stores/user.js:71", res);
+            this.user_list = res.users ?? [];
+            formatAppLog("log", "at stores/user.js:73", this.user_list);
+            this.isSucceed = true;
           }
         });
       }
     }
   });
-  const _sfc_main$8 = {
+  const _sfc_main$9 = {
     __name: "login",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -8628,18 +8671,15 @@ This will fail in production if not fixed.`);
         if (isClick)
           return;
         isClick = true;
-        const d = aesDecrypt(link.value);
-        const m = aesEncrypt("liqiquan#liqiquan#http://192.168.1.30:8000");
-        formatAppLog("log", "at pages/login/login.vue:43", m);
+        const d = aesDecrypt(link.value.trim());
         const info = d.split("#");
-        if (info.length !== 3) {
+        if (info.length !== 2) {
           toastRef.value.show("设备链接无效");
         }
         store.username = info[0];
-        store.password = info[1];
-        Request.init(info[2]);
+        Request.init(info[1]);
         await store.login();
-        if (store.isLogin) {
+        if (!store.isSucceed) {
           toastRef.value.show("登陆失败");
         }
         isClick = false;
@@ -8650,8 +8690,6 @@ This will fail in production if not fixed.`);
         isClick = v;
       }, store, handleLogin, ref: vue.ref, RightToast, get aesDecrypt() {
         return aesDecrypt;
-      }, get aesEncrypt() {
-        return aesEncrypt;
       }, get Request() {
         return Request;
       }, get useUserStore() {
@@ -8661,7 +8699,7 @@ This will fail in production if not fixed.`);
       return __returned__;
     }
   };
-  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
       vue.createElementVNode("view", { class: "content" }, [
         vue.withDirectives(vue.createElementVNode(
@@ -8691,7 +8729,7 @@ This will fail in production if not fixed.`);
       ])
     ]);
   }
-  const PagesLoginLogin = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-e4e4508d"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/login/login.vue"]]);
+  const PagesLoginLogin = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$8], ["__scopeId", "data-v-e4e4508d"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/login/login.vue"]]);
   const fontData = [
     {
       "font_class": "arrow-down",
@@ -9342,7 +9380,7 @@ This will fail in production if not fixed.`);
     const reg = /^[0-9]*$/g;
     return typeof val === "number" || reg.test(val) ? val + "px" : val;
   };
-  const _sfc_main$7 = {
+  const _sfc_main$8 = {
     name: "UniIcons",
     emits: ["click"],
     props: {
@@ -9396,7 +9434,7 @@ This will fail in production if not fixed.`);
       }
     }
   };
-  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "text",
       {
@@ -9411,71 +9449,23 @@ This will fail in production if not fixed.`);
       /* CLASS, STYLE */
     );
   }
-  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code_tools/projects/front/flip-card-app/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
-  const _sfc_main$6 = {
-    __name: "TopBar",
-    props: {
-      isShow: Boolean,
-      iconType: String,
-      title: String
-    },
-    setup(__props, { expose: __expose }) {
-      __expose();
-      const __returned__ = {};
-      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
-      return __returned__;
-    }
-  };
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
-    return vue.openBlock(), vue.createElementBlock("view", { class: "navbar" }, [
-      vue.withDirectives(vue.createElementVNode(
-        "view",
-        { class: "nav-left" },
-        [
-          vue.createElementVNode("view", { class: "icon-btn" }, [
-            vue.createVNode(_component_uni_icons, {
-              type: $props.iconType,
-              size: "20",
-              color: "#333"
-            }, null, 8, ["type"])
-          ])
-        ],
-        512
-        /* NEED_PATCH */
-      ), [
-        [vue.vShow, $props.isShow]
-      ]),
-      vue.createElementVNode(
-        "view",
-        { class: "nav-title" },
-        vue.toDisplayString($props.title),
-        1
-        /* TEXT */
-      ),
-      vue.createElementVNode("view", {
-        class: "nav-right",
-        onClick: _cache[0] || (_cache[0] = (...args) => _ctx.openSetting && _ctx.openSetting(...args))
-      }, [
-        vue.createElementVNode("view", { class: "icon-btn" }, [
-          vue.createVNode(_component_uni_icons, {
-            type: "gear",
-            size: "20",
-            color: "#333"
-          })
-        ])
-      ])
-    ]);
-  }
-  const TopBar = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-32d0c71d"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/TopBar.vue"]]);
+  const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$7], ["__scopeId", "data-v-d31e1c47"], ["__file", "D:/code_tools/projects/front/flip-card-app/uni_modules/uni-icons/components/uni-icons/uni-icons.vue"]]);
   const useDeviceStore = defineStore("device", {
     state: () => ({
       model: -1,
       futureModel: -1,
       isSucceed: true,
-      codeList: ["", "", "", "", ""]
+      self_ssid: "",
+      self_pwd: ""
     }),
     actions: {
+      // 清理缓存数据再退出，以免影响新登录账号
+      cleanData() {
+        this.model = -1;
+        this.futureModel = -1;
+        this.self_ssid = "";
+        this.self_pwd = "";
+      },
       async control(cmd) {
         this.isSucceed = false;
         const api2 = new Request();
@@ -9484,17 +9474,23 @@ This will fail in production if not fixed.`);
           device_id: userStore.username,
           cmd
         }).then((res) => {
-          formatAppLog("log", "at stores/device.js:25", res);
+          formatAppLog("log", "at stores/device.js:33", res);
           if (res.code === 0) {
-            this.isSucceed = true;
             this.model = Number(res.msg[0]);
-            formatAppLog("log", "at stores/device.js:29", this.model);
+            if (cmd == "4") {
+              let info = String(res.msg).split("$");
+              this.self_ssid = info[0].slice(1);
+              this.self_pwd = info[1];
+              this.isSucceed = true;
+            } else {
+              this.isSucceed = res.msg[1] == "0";
+            }
           }
         });
       }
     }
   });
-  const _sfc_main$5 = {
+  const _sfc_main$7 = {
     __name: "home",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -9528,13 +9524,23 @@ This will fail in production if not fixed.`);
         // 	icon: 'iconfont icon-jisuan'
         // },
       ];
+      function openRoot() {
+        uni.navigateTo({
+          url: "/pages/root/root"
+        });
+      }
+      function openSetting() {
+        uni.navigateTo({
+          url: "/pages/setting/setting"
+        });
+      }
       const handleClick = (index) => {
         store.futureModel = index;
-        uni.reLaunch({
+        uni.navigateTo({
           url: `/pages/trial/trial`
         });
       };
-      const __returned__ = { store, userStore, toastRef, btnList, handleClick, ref: vue.ref, TopBar, RightToast, get useDeviceStore() {
+      const __returned__ = { store, userStore, toastRef, btnList, openRoot, openSetting, handleClick, ref: vue.ref, RightToast, get useDeviceStore() {
         return useDeviceStore;
       }, get useUserStore() {
         return useUserStore;
@@ -9547,14 +9553,44 @@ This will fail in production if not fixed.`);
       return __returned__;
     }
   };
-  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
-      vue.createVNode($setup["TopBar"], {
-        isShow: $setup.userStore.isRoot,
-        iconType: "contact",
-        title: "设备控制"
-      }, null, 8, ["isShow"]),
+      vue.createElementVNode("view", { class: "navbar" }, [
+        vue.withDirectives(vue.createElementVNode(
+          "view",
+          {
+            class: "nav-left",
+            onClick: $setup.openRoot
+          },
+          [
+            vue.createElementVNode("view", { class: "icon-btn" }, [
+              vue.createVNode(_component_uni_icons, {
+                type: "contact",
+                size: "20",
+                color: "#333"
+              })
+            ])
+          ],
+          512
+          /* NEED_PATCH */
+        ), [
+          [vue.vShow, $setup.userStore.isRoot]
+        ]),
+        vue.createElementVNode("view", { class: "nav-title" }, "设备控制"),
+        vue.createElementVNode("view", {
+          class: "nav-right",
+          onClick: $setup.openSetting
+        }, [
+          vue.createElementVNode("view", { class: "icon-btn" }, [
+            vue.createVNode(_component_uni_icons, {
+              type: "gear",
+              size: "20",
+              color: "#333"
+            })
+          ])
+        ])
+      ]),
       vue.createElementVNode("view", { class: "content" }, [
         vue.createElementVNode("view", { class: "panel" }, [
           (vue.openBlock(), vue.createElementBlock(
@@ -9595,8 +9631,8 @@ This will fail in production if not fixed.`);
       )
     ]);
   }
-  const PagesHomeHome = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-07e72d3c"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/home/home.vue"]]);
-  const _sfc_main$4 = {
+  const PagesHomeHome = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$6], ["__scopeId", "data-v-07e72d3c"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/home/home.vue"]]);
+  const _sfc_main$6 = {
     __name: "trial",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -9607,8 +9643,8 @@ This will fail in production if not fixed.`);
       const toastRef = vue.ref(null);
       const store = useDeviceStore();
       function back() {
-        uni.reLaunch({
-          url: "/pages/home/home"
+        uni.navigateBack({
+          delta: 1
         });
       }
       function generate() {
@@ -9627,7 +9663,7 @@ This will fail in production if not fixed.`);
           return;
         }
         if (val === correct.value) {
-          if (current.value + 1 >= 1) {
+          if (current.value + 1 >= 3) {
             if (store.futureModel <= 1) {
               await store.control(store.futureModel.toString());
               if (!store.isSucceed) {
@@ -9635,10 +9671,6 @@ This will fail in production if not fixed.`);
               }
               back();
             } else if (store.futureModel == 2) {
-              if (store.model === store.futureModel) {
-                await store.control("2" + store.codeList.join(""));
-                toastRef.value.show(store.isSucceed ? "发送成功" : "发送失败");
-              }
               uni.reLaunch({
                 url: "/pages/sendMsg/sendMsg"
               });
@@ -9668,22 +9700,32 @@ This will fail in production if not fixed.`);
       });
       const __returned__ = { current, answer, expr, correct, toastRef, store, back, generate, submit, ref: vue.ref, onMounted: vue.onMounted, get useDeviceStore() {
         return useDeviceStore;
-      }, TopBar, RightToast };
+      }, RightToast };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
       [
-        vue.createVNode($setup["TopBar"], {
-          isShow: true,
-          iconType: "back",
-          title: "验证非人机",
-          onClick: $setup.back
-        }),
+        vue.createElementVNode("view", { class: "navbar" }, [
+          vue.createElementVNode("view", {
+            class: "nav-left",
+            onClick: $setup.back
+          }, [
+            vue.createElementVNode("view", { class: "icon-btn" }, [
+              vue.createVNode(_component_uni_icons, {
+                type: "back",
+                size: "20",
+                color: "#333"
+              })
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "nav-title" }, "验证")
+        ]),
         vue.createElementVNode("view", { class: "card" }, [
           vue.createElementVNode(
             "view",
@@ -9731,237 +9773,284 @@ This will fail in production if not fixed.`);
       /* STABLE_FRAGMENT */
     );
   }
-  const PagesTrialTrial = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-ba43aec4"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/trial/trial.vue"]]);
-  const _sfc_main$3 = {
+  const PagesTrialTrial = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$5], ["__scopeId", "data-v-ba43aec4"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/trial/trial.vue"]]);
+  const _sfc_main$5 = {
     __name: "root",
     setup(__props, { expose: __expose }) {
       __expose();
-      const codeList = vue.ref(["", "", "", "", ""]);
-      const currentIndex = vue.ref(0);
-      const row1 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-      const row2 = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
-      const row3 = ["J", "K", "L", "M", "N", "O", "P", "Q", "R"];
-      const row4 = ["S", "T", "U", "V", "W", "X", "Y", "Z", "+"];
-      const row5 = [
-        { value: "-", type: "normal" },
-        { value: "/", type: "normal" },
-        { value: "?", type: "normal" },
-        { value: "!", type: "normal" },
-        { value: "@", type: "normal" },
-        { value: ":", type: "normal" },
-        { value: "♡", type: "heart" },
-        // ✅ 改这里
-        { value: " ", type: "space" },
-        { value: "del", type: "delete" }
-      ];
-      const vibrate = () => {
-        uni.vibrateShort({ type: "light" });
+      const store = useUserStore();
+      onLoad(() => {
+        store.singleUser = [];
+        store.user_list = [];
+      });
+      function back() {
+        uni.navigateBack({
+          delta: 1
+        });
+      }
+      const toastRef = vue.ref(null);
+      const showAllUserBox = vue.ref(false);
+      const createName = vue.ref("");
+      const deleteName = vue.ref("");
+      const searchName = vue.ref("");
+      const reg = /[^A-Za-z_]/g;
+      const formatInput = (type) => {
+        switch (type) {
+          case "create":
+            createName.value = createName.value.replace(reg, "");
+            break;
+          case "delete":
+            deleteName.value = deleteName.value.replace(reg, "");
+            break;
+          case "search":
+            searchName.value = searchName.value.replace(reg, "");
+            break;
+        }
       };
-      const handleInput = (val) => {
-        vibrate();
-        if (currentIndex.value >= codeList.value.length) {
-          codeList.value[codeList.value.length - 1] = val;
+      const submitCreate = async () => {
+        const name = createName.value.trim();
+        if (!name) {
+          uni.showToast({
+            title: "用户名不能为空",
+            icon: "none"
+          });
           return;
         }
-        codeList.value[currentIndex.value] = val;
-        if (currentIndex.value < codeList.value.length - 1) {
-          currentIndex.value++;
+        await store.createUser(name);
+        if (store.isSucceed) {
+          toastRef.value.show("创建新用户成功");
+        } else {
+          toastRef.value.show("创建新用户失败");
         }
+        createName.value = "";
       };
-      const handleSpecial = (k) => {
-        vibrate();
-        if (k.type === "delete") {
-          if (codeList.value[currentIndex.value]) {
-            codeList.value[currentIndex.value] = "";
-            return;
-          }
-          if (currentIndex.value > 0) {
-            currentIndex.value--;
-            codeList.value[currentIndex.value] = "";
-          }
+      const submitDelete = async () => {
+        const name = deleteName.value.trim();
+        if (!name) {
+          uni.showToast({
+            title: "用户名不能为空",
+            icon: "none"
+          });
           return;
         }
-        handleInput(k.value);
+        await store.deleteUser(name);
+        if (store.isSucceed) {
+          toastRef.value.show("删除用户成功");
+        } else {
+          toastRef.value.show("删除用户失败");
+        }
+        deleteName.value = "";
       };
-      const setFocus = (i) => {
-        currentIndex.value = i;
+      function copyUserLink() {
+        uni.setClipboardData({
+          data: aesEncrypt(`${store.singleUser[0].username}#${Request.url}`),
+          success: () => {
+            toastRef.value.show("复制成功");
+          }
+        });
+      }
+      const searchSingleUser = async () => {
+        const name = searchName.value.trim();
+        if (!name) {
+          uni.showToast({
+            title: "请输入用户名",
+            icon: "none"
+          });
+          return;
+        }
+        await store.getUserInfo(name);
+        if (store.isSucceed) {
+          toastRef.value.show("查询用户成功");
+        } else {
+          toastRef.value.show("查询用户失败");
+        }
       };
-      const __returned__ = { codeList, currentIndex, row1, row2, row3, row4, row5, vibrate, handleInput, handleSpecial, setFocus, ref: vue.ref };
+      const getAllUserList = async () => {
+        await store.getAllUsers();
+        if (store.isSucceed) {
+          showAllUserBox.value = true;
+          toastRef.value.show("查询全部用户信息成功");
+        } else {
+          toastRef.value.show("查询全部用户信息失败");
+        }
+      };
+      const __returned__ = { store, back, toastRef, showAllUserBox, createName, deleteName, searchName, reg, formatInput, submitCreate, submitDelete, copyUserLink, searchSingleUser, getAllUserList, ref: vue.ref, get onLoad() {
+        return onLoad;
+      }, RightToast, get useUserStore() {
+        return useUserStore;
+      }, get aesEncrypt() {
+        return aesEncrypt;
+      }, get Request() {
+        return Request;
+      } };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
-      vue.createElementVNode("view", { class: "nav-bar" }, [
-        vue.createElementVNode("text", null, "标题")
-      ]),
-      vue.createElementVNode("view", { class: "code-box" }, [
-        (vue.openBlock(true), vue.createElementBlock(
-          vue.Fragment,
-          null,
-          vue.renderList($setup.codeList, (item, index) => {
-            return vue.openBlock(), vue.createElementBlock("view", {
-              key: index,
-              class: vue.normalizeClass(["code-item", { active: $setup.currentIndex === index }]),
-              onClick: ($event) => $setup.setFocus(index)
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode("view", { class: "navbar" }, [
+          vue.createElementVNode("view", {
+            class: "nav-left",
+            onClick: $setup.back
+          }, [
+            vue.createElementVNode("view", { class: "icon-btn" }, [
+              vue.createVNode(_component_uni_icons, {
+                type: "back",
+                size: "20",
+                color: "#333"
+              })
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "nav-title" }, "管理员界面")
+        ]),
+        vue.createElementVNode("view", { class: "admin-container" }, [
+          vue.createElementVNode("view", { class: "module-card" }, [
+            vue.withDirectives(vue.createElementVNode(
+              "input",
+              {
+                class: "full-input",
+                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.createName = $event),
+                placeholder: "请输入用户名（仅字母、下划线）",
+                onInput: _cache[1] || (_cache[1] = ($event) => $setup.formatInput("create"))
+              },
+              null,
+              544
+              /* NEED_HYDRATION, NEED_PATCH */
+            ), [
+              [vue.vModelText, $setup.createName]
+            ]),
+            vue.createElementVNode("button", {
+              class: "full-btn mt-space",
+              onClick: $setup.submitCreate
+            }, "创建用户")
+          ]),
+          vue.createElementVNode("view", { class: "module-card" }, [
+            vue.withDirectives(vue.createElementVNode(
+              "input",
+              {
+                class: "full-input",
+                "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.searchName = $event),
+                placeholder: "请输入用户名（仅字母、下划线）",
+                onInput: _cache[3] || (_cache[3] = ($event) => $setup.formatInput("search"))
+              },
+              null,
+              544
+              /* NEED_HYDRATION, NEED_PATCH */
+            ), [
+              [vue.vModelText, $setup.searchName]
+            ]),
+            vue.createElementVNode("button", {
+              class: "full-btn mt-space",
+              onClick: $setup.searchSingleUser
+            }, "查询用户"),
+            $setup.store.singleUser.length ? (vue.openBlock(), vue.createElementBlock("view", {
+              key: 0,
+              class: "info-panel mt-space"
             }, [
-              item && item !== " " ? (vue.openBlock(), vue.createElementBlock(
+              vue.createElementVNode(
                 "text",
-                {
-                  key: 0,
-                  class: vue.normalizeClass({ heart: item === "♡" })
-                },
-                vue.toDisplayString(item),
-                3
-                /* TEXT, CLASS */
-              )) : vue.createCommentVNode("v-if", true),
-              item === " " ? (vue.openBlock(), vue.createElementBlock("view", {
-                key: 1,
-                class: "space-line"
-              })) : vue.createCommentVNode("v-if", true),
-              $setup.currentIndex === index && !item ? (vue.openBlock(), vue.createElementBlock("view", {
-                key: 2,
-                class: "cursor"
-              })) : vue.createCommentVNode("v-if", true)
-            ], 10, ["onClick"]);
-          }),
-          128
-          /* KEYED_FRAGMENT */
-        ))
-      ]),
-      vue.createElementVNode("view", { class: "keyboard" }, [
-        vue.createElementVNode("view", { class: "row" }, [
-          (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
-            null,
-            vue.renderList($setup.row1, (k) => {
-              return vue.createElementVNode("view", {
-                key: k,
-                class: "key",
-                onClick: ($event) => $setup.handleInput(k)
-              }, [
-                vue.createElementVNode(
-                  "text",
+                { class: "info-item" },
+                "用户名：" + vue.toDisplayString($setup.store.singleUser[0].username),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "text",
+                { class: "info-item" },
+                "登录时间：" + vue.toDisplayString($setup.store.singleUser[0].login_time || "暂无登录记录"),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode("button", {
+                class: "full-btn mt-space",
+                onClick: $setup.copyUserLink
+              }, "复制该用户加密链接")
+            ])) : vue.createCommentVNode("v-if", true)
+          ]),
+          vue.createElementVNode("view", { class: "module-card" }, [
+            vue.withDirectives(vue.createElementVNode(
+              "input",
+              {
+                class: "full-input",
+                "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => $setup.deleteName = $event),
+                placeholder: "请输入用户名（仅字母、下划线）",
+                onInput: _cache[5] || (_cache[5] = ($event) => $setup.formatInput("delete"))
+              },
+              null,
+              544
+              /* NEED_HYDRATION, NEED_PATCH */
+            ), [
+              [vue.vModelText, $setup.deleteName]
+            ]),
+            vue.createElementVNode("button", {
+              class: "full-btn mt-space",
+              onClick: $setup.submitDelete
+            }, "删除用户")
+          ]),
+          vue.createElementVNode("view", { class: "module-card" }, [
+            vue.createElementVNode("button", {
+              class: "full-btn",
+              onClick: $setup.getAllUserList
+            }, "加载全部用户"),
+            $setup.showAllUserBox ? (vue.openBlock(), vue.createElementBlock("view", {
+              key: 0,
+              class: "all-user-dialog"
+            }, [
+              vue.createElementVNode("view", { class: "scroll-wrap" }, [
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
                   null,
-                  vue.toDisplayString(k),
-                  1
-                  /* TEXT */
-                )
-              ], 8, ["onClick"]);
-            }),
-            64
-            /* STABLE_FRAGMENT */
-          ))
+                  vue.renderList($setup.store.user_list, (item, index) => {
+                    return vue.openBlock(), vue.createElementBlock("view", {
+                      class: "user-row",
+                      key: index
+                    }, [
+                      vue.createElementVNode(
+                        "text",
+                        null,
+                        "用户名：" + vue.toDisplayString(item.username),
+                        1
+                        /* TEXT */
+                      ),
+                      vue.createElementVNode(
+                        "text",
+                        null,
+                        "登录时间：" + vue.toDisplayString(item.login_time || "暂无登录记录"),
+                        1
+                        /* TEXT */
+                      )
+                    ]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
+              ]),
+              vue.createElementVNode("button", {
+                class: "full-btn close-btn",
+                onClick: _cache[6] || (_cache[6] = ($event) => $setup.showAllUserBox = false)
+              }, "关闭")
+            ])) : vue.createCommentVNode("v-if", true)
+          ])
         ]),
-        vue.createElementVNode("view", { class: "row" }, [
-          (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
-            null,
-            vue.renderList($setup.row2, (k) => {
-              return vue.createElementVNode("view", {
-                key: k,
-                class: "key",
-                onClick: ($event) => $setup.handleInput(k)
-              }, [
-                vue.createElementVNode(
-                  "text",
-                  null,
-                  vue.toDisplayString(k),
-                  1
-                  /* TEXT */
-                )
-              ], 8, ["onClick"]);
-            }),
-            64
-            /* STABLE_FRAGMENT */
-          ))
-        ]),
-        vue.createElementVNode("view", { class: "row" }, [
-          (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
-            null,
-            vue.renderList($setup.row3, (k) => {
-              return vue.createElementVNode("view", {
-                key: k,
-                class: "key",
-                onClick: ($event) => $setup.handleInput(k)
-              }, [
-                vue.createElementVNode(
-                  "text",
-                  null,
-                  vue.toDisplayString(k),
-                  1
-                  /* TEXT */
-                )
-              ], 8, ["onClick"]);
-            }),
-            64
-            /* STABLE_FRAGMENT */
-          ))
-        ]),
-        vue.createElementVNode("view", { class: "row" }, [
-          (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
-            null,
-            vue.renderList($setup.row4, (k) => {
-              return vue.createElementVNode("view", {
-                key: k,
-                class: "key",
-                onClick: ($event) => $setup.handleInput(k)
-              }, [
-                vue.createElementVNode(
-                  "text",
-                  null,
-                  vue.toDisplayString(k),
-                  1
-                  /* TEXT */
-                )
-              ], 8, ["onClick"]);
-            }),
-            64
-            /* STABLE_FRAGMENT */
-          ))
-        ]),
-        vue.createElementVNode("view", { class: "row" }, [
-          (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
-            null,
-            vue.renderList($setup.row5, (k) => {
-              return vue.createElementVNode("view", {
-                key: k.value,
-                class: vue.normalizeClass(["key", k.type]),
-                onClick: ($event) => $setup.handleSpecial(k)
-              }, [
-                k.type === "normal" ? (vue.openBlock(), vue.createElementBlock(
-                  "text",
-                  { key: 0 },
-                  vue.toDisplayString(k.value),
-                  1
-                  /* TEXT */
-                )) : vue.createCommentVNode("v-if", true),
-                k.type === "heart" ? (vue.openBlock(), vue.createElementBlock("text", {
-                  key: 1,
-                  class: "heart"
-                }, "♡")) : vue.createCommentVNode("v-if", true),
-                k.type === "space" ? (vue.openBlock(), vue.createElementBlock("view", {
-                  key: 2,
-                  class: "space-key"
-                }, [
-                  vue.createElementVNode("view", { class: "space-line" })
-                ])) : vue.createCommentVNode("v-if", true),
-                k.type === "delete" ? (vue.openBlock(), vue.createElementBlock("text", { key: 3 }, "⌫")) : vue.createCommentVNode("v-if", true)
-              ], 10, ["onClick"]);
-            }),
-            64
-            /* STABLE_FRAGMENT */
-          ))
-        ])
-      ])
-    ]);
+        vue.createVNode(
+          $setup["RightToast"],
+          { ref: "toastRef" },
+          null,
+          512
+          /* NEED_PATCH */
+        )
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
   }
-  const PagesRootRoot = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$2], ["__scopeId", "data-v-6e8f7b30"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/root/root.vue"]]);
-  const _sfc_main$2 = {
+  const PagesRootRoot = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-6e8f7b30"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/root/root.vue"]]);
+  const _sfc_main$4 = {
     __name: "sendMsg",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -10045,19 +10134,34 @@ This will fail in production if not fixed.`);
         }
       ];
       function back() {
-        uni.reLaunch({
-          url: "/pages/home/home"
+        uni.navigateBack({
+          delta: 1
         });
       }
-      let flag = false;
+      let flag = false, timer = false;
       const onSend = async () => {
         if (flag) {
           return;
         }
-        store.codeList = codeList;
-        uni.reLaunch({
-          url: `/pages/trial/trial`
-        });
+        if (timer) {
+          toastRef.value.show("发送频率太高，请等待片刻");
+          return;
+        }
+        flag = true;
+        timer = true;
+        let msg = codeList.value.join("");
+        msg = msg.replaceAll("♡", "*");
+        formatAppLog("log", "at pages/sendMsg/sendMsg.vue:190", msg);
+        await store.control("2" + msg);
+        if (store.isSucceed) {
+          toastRef.value.show("发送成功");
+        } else {
+          toastRef.value.show("发送失败");
+        }
+        setTimeout(() => {
+          timer = false;
+        }, 1e4);
+        flag = false;
       };
       const vibrate = () => {
         uni.vibrateShort({
@@ -10090,22 +10194,35 @@ This will fail in production if not fixed.`);
         return flag;
       }, set flag(v) {
         flag = v;
-      }, onSend, vibrate, input, handleSpecial, setFocus, ref: vue.ref, TopBar, RightToast, get useDeviceStore() {
+      }, get timer() {
+        return timer;
+      }, set timer(v) {
+        timer = v;
+      }, onSend, vibrate, input, handleSpecial, setFocus, ref: vue.ref, RightToast, get useDeviceStore() {
         return useDeviceStore;
       } };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
     }
   };
-  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
-      vue.createVNode($setup["TopBar"], {
-        isShow: true,
-        iconType: "back",
-        title: "发送文本",
-        onClick: $setup.back
-      }),
+      vue.createElementVNode("view", { class: "navbar" }, [
+        vue.createElementVNode("view", {
+          class: "nav-left",
+          onClick: $setup.back
+        }, [
+          vue.createElementVNode("view", { class: "icon-btn" }, [
+            vue.createVNode(_component_uni_icons, {
+              type: "back",
+              size: "20",
+              color: "#333"
+            })
+          ])
+        ]),
+        vue.createElementVNode("view", { class: "nav-title" }, "发送文本")
+      ]),
       vue.createElementVNode("view", { class: "code-box" }, [
         (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
@@ -10289,8 +10406,64 @@ This will fail in production if not fixed.`);
       )
     ]);
   }
-  const PagesSendMsgSendMsg = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$1], ["__scopeId", "data-v-9b644b6d"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/sendMsg/sendMsg.vue"]]);
-  const _sfc_main$1 = {
+  const PagesSendMsgSendMsg = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$3], ["__scopeId", "data-v-9b644b6d"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/sendMsg/sendMsg.vue"]]);
+  const _sfc_main$3 = {
+    __name: "TopBar",
+    props: {
+      isShow: Boolean,
+      iconType: String,
+      title: String
+    },
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const __returned__ = {};
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
+    return vue.openBlock(), vue.createElementBlock("view", { class: "navbar" }, [
+      vue.withDirectives(vue.createElementVNode(
+        "view",
+        { class: "nav-left" },
+        [
+          vue.createElementVNode("view", { class: "icon-btn" }, [
+            vue.createVNode(_component_uni_icons, {
+              type: $props.iconType,
+              size: "20",
+              color: "#333"
+            }, null, 8, ["type"])
+          ])
+        ],
+        512
+        /* NEED_PATCH */
+      ), [
+        [vue.vShow, $props.isShow]
+      ]),
+      vue.createElementVNode(
+        "view",
+        { class: "nav-title" },
+        vue.toDisplayString($props.title),
+        1
+        /* TEXT */
+      ),
+      vue.createElementVNode("view", {
+        class: "nav-right",
+        onClick: _cache[0] || (_cache[0] = (...args) => _ctx.openSetting && _ctx.openSetting(...args))
+      }, [
+        vue.createElementVNode("view", { class: "icon-btn" }, [
+          vue.createVNode(_component_uni_icons, {
+            type: "gear",
+            size: "20",
+            color: "#333"
+          })
+        ])
+      ])
+    ]);
+  }
+  const TopBar = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$2], ["__scopeId", "data-v-32d0c71d"], ["__file", "D:/code_tools/projects/front/flip-card-app/components/TopBar.vue"]]);
+  const _sfc_main$2 = {
     __name: "calcGame",
     setup(__props, { expose: __expose }) {
       __expose();
@@ -10494,7 +10667,7 @@ This will fail in production if not fixed.`);
       return __returned__;
     }
   };
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
       null,
@@ -10585,23 +10758,351 @@ This will fail in production if not fixed.`);
       /* STABLE_FRAGMENT */
     );
   }
-  const PagesCalcGameCalcGame = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__scopeId", "data-v-2ea504a5"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/calcGame/calcGame.vue"]]);
+  const PagesCalcGameCalcGame = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$1], ["__scopeId", "data-v-2ea504a5"], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/calcGame/calcGame.vue"]]);
+  const _sfc_main$1 = {
+    __name: "setting",
+    setup(__props, { expose: __expose }) {
+      __expose();
+      const store = useDeviceStore();
+      const userStore = useUserStore();
+      const toastRef = vue.ref(null);
+      const link = vue.ref(aesEncrypt(`${userStore.username}#${Request.url}`));
+      const defaultSsid = vue.ref("Lqq");
+      const defaultWifiPwd = vue.ref("Hello_lady");
+      const showWifiPop = vue.ref(false);
+      const tempSsid = vue.ref("");
+      const tempPwd = vue.ref("");
+      onLoad(async () => {
+        formatAppLog("log", "at pages/setting/setting.vue:140", "Heloo");
+        await store.control("4");
+        if (!store.isSucceed) {
+          toastRef.value.show("查询设备状态失败，请检查设备连接是否正常");
+        }
+      });
+      let send_flag = false;
+      const openWifiDialog = () => {
+        if (send_flag) {
+          toastRef.value.show("正在修改，请等待...");
+          return;
+        }
+        showWifiPop.value = true;
+        tempSsid.value = store.self_ssid;
+        tempPwd.value = store.self_pwd;
+      };
+      const closeWifiDialog = () => {
+        showWifiPop.value = false;
+      };
+      const allowReg = /[^A-Za-z0-9!@#%&*_\-+=|\\:'?/,.]/g;
+      const filterDollar = (type) => {
+        if (type === "ssid") {
+          tempSsid.value = tempSsid.value.replace(allowReg, "");
+        } else {
+          tempPwd.value = tempPwd.value.replace(allowReg, "");
+        }
+      };
+      const copyEncryptUrl = () => {
+        uni.setClipboardData({
+          data: link.value,
+          success: () => {
+            toastRef.value.showToast("复制成功");
+          }
+        });
+      };
+      const sendWifiInfo = async () => {
+        send_flag = true;
+        if (tempSsid.value.length < 3 || tempPwd.value.length < 8) {
+          toastRef.value.show("WiFi名称或密码过短");
+          return;
+        }
+        closeWifiDialog();
+        await store.control("5" + tempSsid.value + "$" + tempPwd.value);
+        if (store.isSucceed) {
+          store.self_ssid = tempSsid.value;
+          store.self_pwd = tempPwd.value;
+          toastRef.value.show("修改WiFi配置成功");
+        } else {
+          toastRef.value.show("修改WiFi配置失败");
+        }
+        send_flag = false;
+      };
+      let calibrate_flag = false;
+      const deviceCalibrate = async () => {
+        if (calibrate_flag) {
+          toastRef.value.show("正在校准，请等待...");
+          return;
+        }
+        uni.showModal({
+          title: "设备校准",
+          content: "确认开始设备校准？",
+          success: async (res) => {
+            if (res.confirm) {
+              calibrate_flag = true;
+              toastRef.value.show("正在校准，请等待...");
+              await store.control("6");
+              if (store.isSucceed) {
+                toastRef.value.show("校准成功");
+              } else {
+                toastRef.value.show("校准失败");
+              }
+              calibrate_flag = false;
+            }
+          }
+        });
+      };
+      function back() {
+        uni.navigateBack({
+          delta: 1
+        });
+      }
+      function logout() {
+        store.cleanData();
+        uni.reLaunch({
+          url: "/pages/login/login"
+        });
+      }
+      const __returned__ = { store, userStore, toastRef, link, defaultSsid, defaultWifiPwd, showWifiPop, tempSsid, tempPwd, get send_flag() {
+        return send_flag;
+      }, set send_flag(v) {
+        send_flag = v;
+      }, openWifiDialog, closeWifiDialog, allowReg, filterDollar, copyEncryptUrl, sendWifiInfo, get calibrate_flag() {
+        return calibrate_flag;
+      }, set calibrate_flag(v) {
+        calibrate_flag = v;
+      }, deviceCalibrate, back, logout, ref: vue.ref, get onLoad() {
+        return onLoad;
+      }, RightToast, get useDeviceStore() {
+        return useDeviceStore;
+      }, get useUserStore() {
+        return useUserStore;
+      }, get Request() {
+        return Request;
+      }, get aesEncrypt() {
+        return aesEncrypt;
+      } };
+      Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+      return __returned__;
+    }
+  };
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_uni_icons = resolveEasycom(vue.resolveDynamicComponent("uni-icons"), __easycom_0);
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createElementVNode("view", { class: "navbar" }, [
+          vue.createElementVNode("view", {
+            class: "nav-left",
+            onClick: $setup.back
+          }, [
+            vue.createElementVNode("view", { class: "icon-btn" }, [
+              vue.createVNode(_component_uni_icons, {
+                type: "back",
+                size: "20",
+                color: "#333"
+              })
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "nav-title" }, "设备配置信息")
+        ]),
+        vue.createElementVNode("view", { class: "config-wrap" }, [
+          vue.createElementVNode("view", { class: "item-box" }, [
+            vue.createElementVNode("text", { class: "item-title" }, [
+              vue.createElementVNode("b", null, "设备ID")
+            ]),
+            vue.createElementVNode("view", { class: "item-content" }, [
+              vue.createElementVNode(
+                "text",
+                { class: "text-val" },
+                vue.toDisplayString($setup.userStore.username),
+                1
+                /* TEXT */
+              )
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "split-line" }),
+          vue.createElementVNode("view", { class: "item-box" }, [
+            vue.createElementVNode("text", { class: "item-title" }, [
+              vue.createElementVNode("b", null, "设备状态")
+            ]),
+            vue.createElementVNode("view", { class: "item-content" }, [
+              vue.createElementVNode(
+                "text",
+                { class: "text-val" },
+                vue.toDisplayString($setup.store.isSucceed ? "正常" : "异常"),
+                1
+                /* TEXT */
+              )
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "split-line" }),
+          vue.createElementVNode("view", { class: "item-box" }, [
+            vue.createElementVNode("text", { class: "item-title" }, [
+              vue.createElementVNode("b", null, "设备加密链接")
+            ]),
+            vue.createElementVNode("view", { class: "item-content" }, [
+              vue.createElementVNode("button", {
+                class: "gray-btn",
+                onClick: $setup.copyEncryptUrl
+              }, "复制链接")
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "split-line" }),
+          vue.createElementVNode("view", { class: "item-box" }, [
+            vue.createElementVNode("text", { class: "item-title" }, [
+              vue.createElementVNode("b", null, "默认WiFi配置")
+            ]),
+            vue.createElementVNode("view", { class: "item-content" }, [
+              vue.createElementVNode(
+                "text",
+                { class: "text-val" },
+                "名称：" + vue.toDisplayString($setup.defaultSsid),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode("view", { style: { "margin-top": "8rpx" } }),
+              vue.createElementVNode(
+                "text",
+                { class: "text-val" },
+                "密码：" + vue.toDisplayString($setup.defaultWifiPwd),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode("view", { style: { "margin-top": "8rpx" } }),
+              vue.createElementVNode("text", { class: "tip-desc" }, "(优先使用自定义WIFI配置)")
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "split-line" }),
+          vue.createElementVNode("view", { class: "item-box" }, [
+            vue.createElementVNode("text", { class: "item-title" }, [
+              vue.createElementVNode("b", null, "自定义WiFi配置")
+            ]),
+            vue.createElementVNode("view", { class: "item-content" }, [
+              vue.createElementVNode(
+                "text",
+                { class: "text-val" },
+                "名称：" + vue.toDisplayString($setup.store.self_ssid ? $setup.store.self_ssid : "未配置"),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode("view", { style: { "margin-top": "8rpx" } }),
+              vue.createElementVNode(
+                "text",
+                { class: "text-val" },
+                "密码：" + vue.toDisplayString($setup.store.self_pwd ? $setup.store.self_pwd : "未配置"),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode("view", { style: { "margin-top": "8rpx" } }),
+              vue.createElementVNode("button", {
+                class: "gray-btn mt10",
+                onClick: $setup.openWifiDialog
+              }, "修改WiFi配置")
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "split-line" }),
+          vue.createElementVNode("view", { class: "item-box" }, [
+            vue.createElementVNode("text", { class: "item-title" }, [
+              vue.createElementVNode("b", null, "设备校准")
+            ]),
+            vue.createElementVNode("view", { class: "item-content" }, [
+              vue.createElementVNode("button", {
+                class: "gray-btn",
+                onClick: $setup.deviceCalibrate
+              }, "设备校准")
+            ])
+          ]),
+          vue.createElementVNode("view", { class: "split-line" }),
+          vue.createElementVNode("view", { class: "item-box" }, [
+            vue.createElementVNode("view", { class: "item-content" }, [
+              vue.createElementVNode("button", {
+                class: "gray-btn",
+                onClick: $setup.logout
+              }, "退出登陆")
+            ])
+          ]),
+          $setup.showWifiPop ? (vue.openBlock(), vue.createElementBlock("view", {
+            key: 0,
+            class: "pop-mask",
+            onClick: $setup.closeWifiDialog
+          }, [
+            vue.createElementVNode("view", {
+              class: "pop-box",
+              onClick: _cache[4] || (_cache[4] = vue.withModifiers(() => {
+              }, ["stop"]))
+            }, [
+              vue.createElementVNode("view", { class: "pop-item" }, [
+                vue.createElementVNode("text", { class: "pop-label" }, "名称"),
+                vue.withDirectives(vue.createElementVNode(
+                  "input",
+                  {
+                    class: "pop-input",
+                    "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.tempSsid = $event),
+                    onInput: _cache[1] || (_cache[1] = ($event) => $setup.filterDollar("ssid")),
+                    placeholder: ""
+                  },
+                  null,
+                  544
+                  /* NEED_HYDRATION, NEED_PATCH */
+                ), [
+                  [vue.vModelText, $setup.tempSsid]
+                ])
+              ]),
+              vue.createElementVNode("view", { class: "pop-item" }, [
+                vue.createElementVNode("text", { class: "pop-label" }, "密码"),
+                vue.withDirectives(vue.createElementVNode(
+                  "input",
+                  {
+                    class: "pop-input",
+                    "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.tempPwd = $event),
+                    onInput: _cache[3] || (_cache[3] = ($event) => $setup.filterDollar("pwd")),
+                    placeholder: ""
+                  },
+                  null,
+                  544
+                  /* NEED_HYDRATION, NEED_PATCH */
+                ), [
+                  [vue.vModelText, $setup.tempPwd]
+                ])
+              ]),
+              vue.createElementVNode("view", { class: "pop-btn-wrap" }, [
+                vue.createElementVNode("button", {
+                  class: "pop-send-btn",
+                  onClick: $setup.sendWifiInfo
+                }, "确认修改")
+              ])
+            ])
+          ])) : vue.createCommentVNode("v-if", true)
+        ]),
+        vue.createVNode(
+          $setup["RightToast"],
+          { ref: "toastRef" },
+          null,
+          512
+          /* NEED_PATCH */
+        )
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
+  }
+  const PagesSettingSetting = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__file", "D:/code_tools/projects/front/flip-card-app/pages/setting/setting.vue"]]);
   __definePage("pages/login/login", PagesLoginLogin);
   __definePage("pages/home/home", PagesHomeHome);
   __definePage("pages/trial/trial", PagesTrialTrial);
   __definePage("pages/root/root", PagesRootRoot);
   __definePage("pages/sendMsg/sendMsg", PagesSendMsgSendMsg);
   __definePage("pages/calcGame/calcGame", PagesCalcGameCalcGame);
+  __definePage("pages/setting/setting", PagesSettingSetting);
   const _sfc_main = {
     __name: "App",
     setup(__props, { expose: __expose }) {
       __expose();
       onLaunch(async () => {
-        formatAppLog("log", "at App.vue:16", "APP启动成功");
         const store = useUserStore();
         store.username = uni.getStorageSync("username");
-        store.password = uni.getStorageSync("password");
-        const url = uni.getStorageSync("url");
+        let url = uni.getStorageSync("url");
+        store.username = "liqiquan";
+        url = "http://192.168.1.2:8000";
         Request.init(url);
         await store.login();
       });
@@ -10609,6 +11110,10 @@ This will fail in production if not fixed.`);
         return onLaunch;
       }, get useUserStore() {
         return useUserStore;
+      }, get aesDecrypt() {
+        return aesDecrypt;
+      }, get aesEncrypt() {
+        return aesEncrypt;
       }, get Request() {
         return Request;
       } };

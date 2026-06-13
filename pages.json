@@ -3,7 +3,7 @@
 		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -21,7 +21,7 @@
 		{
 			"path": "pages/root/root",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -32,6 +32,12 @@
 		},
 		{
 			"path": "pages/calcGame/calcGame",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/setting/setting",
 			"style": {
 				"navigationStyle": "custom"
 			}

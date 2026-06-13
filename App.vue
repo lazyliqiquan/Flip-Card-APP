@@ -5,20 +5,19 @@
 	import {
 		useUserStore
 	} from '@/stores/user';
-	// import {
-	// 		aesDecrypt,
-	// 		aesEncrypt
-	// 	} from '@/utils/crypto'
+	import {
+		aesDecrypt,
+		aesEncrypt
+	} from '@/utils/crypto'
 	import Request from '@/utils/request.js';
 	onLaunch(async () => {
-		// const m = aesEncrypt('liqiquan#liqiquan#http://192.168.1.30:8000')
-		// console.log(m)
-		console.log('APP启动成功');
 		// 启动时读取本地存储的数据
 		const store = useUserStore()
 		store.username = uni.getStorageSync('username')
-		store.password = uni.getStorageSync('password')
-		const url = uni.getStorageSync('url')
+		let url = uni.getStorageSync('url')
+		// FIXME: 记得删掉
+		store.username = "liqiquan"
+		url = "http://192.168.1.2:8000"
 		// 设置网络服务器的IP:port
 		Request.init(url)
 		await store.login()

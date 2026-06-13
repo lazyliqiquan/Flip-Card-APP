@@ -21,8 +21,7 @@
 	} from 'vue'
 	import RightToast from '@/components/RightToast.vue'
 	import {
-		aesDecrypt,
-		aesEncrypt
+		aesDecrypt
 	} from '@/utils/crypto'
 	import Request from '@/utils/request'
 	import {
@@ -37,22 +36,16 @@
 	const handleLogin = async () => {
 		if (isClick) return
 		isClick = true
-		const d = aesDecrypt(link.value)
-		// console.log(d)
-		const m = aesEncrypt('liqiquan#liqiquan#http://192.168.1.30:8000')
-		console.log(m)
-		// P2VJAxR4eflv+wJD0xovnsOnA526bvA7KKCb7MjG9LPLR31OL5FML7XNkCqwx+UE
-		// 1wU7uS1nHn4GhOxkDgvJhY6YWuxqvHk95dX8JgEG+KW3W78jNclumZ84RPRvfB0J
+		const d = aesDecrypt(link.value.trim())
 		const info = d.split('#')
-		if (info.length !== 3) {
+		if (info.length !== 2) {
 			toastRef.value.show('设备链接无效')
 		}
 
 		store.username = info[0]
-		store.password = info[1]
-		Request.init(info[2])
+		Request.init(info[1])
 		await store.login()
-		if (store.isLogin) {
+		if (!store.isSucceed) {
 			toastRef.value.show('登陆失败')
 		}
 		isClick = false

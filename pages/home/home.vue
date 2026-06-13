@@ -1,6 +1,20 @@
 <template>
 	<view class="container">
-		<TopBar :isShow="userStore.isRoot" iconType="contact" title='设备控制'></TopBar>
+		<!-- 自定义导航栏 -->
+		<view class="navbar">
+			<view v-show="userStore.isRoot" class="nav-left" @click="openRoot">
+				<view class="icon-btn">
+					<uni-icons type="contact" size="20" color="#333"></uni-icons>
+				</view>
+			</view>
+			<view class="nav-title">设备控制</view>
+
+			<view class="nav-right" @click="openSetting">
+				<view class="icon-btn">
+					<uni-icons type="gear" size="20" color="#333"></uni-icons>
+				</view>
+			</view>
+		</view>
 		<!-- 中央按钮区域 -->
 		<view class="content">
 			<view class="panel">
@@ -22,7 +36,6 @@
 	import {
 		ref
 	} from 'vue'
-	import TopBar from '@/components/TopBar.vue'
 	import RightToast from '@/components/RightToast.vue'
 	import {
 		useDeviceStore
@@ -66,20 +79,24 @@
 		// },
 
 	]
+
+	function openRoot() {
+		uni.navigateTo({
+			url: '/pages/root/root'
+		})
+	}
+
+	function openSetting() {
+		uni.navigateTo({
+			url: '/pages/setting/setting'
+		})
+	}
+
 	const handleClick = (index) => {
 		store.futureModel = index
-		uni.reLaunch({
+		uni.navigateTo({
 			url: `/pages/trial/trial`
 		})
-		// if (index === 2) {
-		// 	uni.reLaunch({
-		// 		url: '/pages/sendMsg/sendMsg'
-		// 	})
-		// } else if (index === 3) {
-		// 	uni.reLaunch({
-		// 		url: '/pages/calcGame/calcGame'
-		// 	})
-		// }
 	}
 </script>
 
@@ -90,6 +107,55 @@
 		display: flex;
 		flex-direction: column;
 		background: #f5f6f7;
+	}
+
+	/* ===== 导航栏 ===== */
+	.navbar {
+		height: 88rpx;
+		padding-top: var(--status-bar-height);
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		position: relative;
+		background: #ffffff;
+		border-bottom: 1rpx solid #eee;
+	}
+
+	.nav-title {
+		font-size: 32rpx;
+		font-weight: 600;
+	}
+
+	.nav-right {
+		position: absolute;
+		right: 30rpx;
+		bottom: 20rpx;
+	}
+
+	.nav-left {
+		position: absolute;
+		left: 30rpx;
+		bottom: 20rpx;
+	}
+
+	.icon-btn {
+		width: 60rpx;
+		height: 60rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		background: #f0f0f0;
+		border-radius: 12rpx;
+
+		transition: all 0.15s;
+	}
+
+	.icon-btn:active {
+		transform: scale(0.9);
+		background: #e0e0e0;
 	}
 
 

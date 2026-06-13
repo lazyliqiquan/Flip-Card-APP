@@ -579,133 +579,172 @@
 		padding: 0 0.3125rem;
 }
 
-
-	/* 页面整体 */
-.container[data-v-07e72d3c] {
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-		background: #f5f6f7;
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+/* ===== 导航栏 ===== */
+.navbar {
+  height: 2.75rem;
+  padding-top: var(--status-bar-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #ffffff;
+  border-bottom: 0.03125rem solid #eee;
+}
+.nav-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.nav-left {
+  position: absolute;
+  left: 0.9375rem;
+  bottom: 0.625rem;
+}
+.icon-btn {
+  width: 1.875rem;
+  height: 1.875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0f0f0;
+  border-radius: 0.375rem;
+  transition: all 0.15s;
+}
+.icon-btn:active {
+  transform: scale(0.9);
+  background: #e0e0e0;
+}
+.config-wrap {
+  padding: 0.625rem;
+  background-color: #fff;
+}
+.item-box {
+  padding: 0.78125rem 0.3125rem;
+}
+.item-title {
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 0.46875rem;
+}
+.item-content {
+  padding-left: 0.3125rem;
+}
+.text-val {
+  font-size: 0.9375rem;
+  color: #333;
+}
+.tip-desc {
+  font-size: 0.75rem;
+  color: #999;
+  margin-left: 0;
+  display: block;
+  margin-top: 0.25rem;
+}
+.mt10 {
+  margin-top: 0.625rem;
 }
 
-	/* ===== 导航栏 ===== */
-.navbar[data-v-07e72d3c] {
-		height: 2.75rem;
-		padding-top: var(--status-bar-height);
-
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		position: relative;
-		background: #ffffff;
-		border-bottom: 0.03125rem solid #eee;
-}
-.nav-title[data-v-07e72d3c] {
-		font-size: 1rem;
-		font-weight: 600;
-}
-.nav-right[data-v-07e72d3c] {
-		position: absolute;
-		right: 0.9375rem;
-		bottom: 0.625rem;
-}
-.nav-left[data-v-07e72d3c] {
-		position: absolute;
-		left: 0.9375rem;
-		bottom: 0.625rem;
-}
-.icon-btn[data-v-07e72d3c] {
-		width: 1.875rem;
-		height: 1.875rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		background: #f0f0f0;
-		border-radius: 0.375rem;
-
-		transition: all 0.15s;
-}
-.icon-btn[data-v-07e72d3c]:active {
-		transform: scale(0.9);
-		background: #e0e0e0;
+/* 分割浅灰线 */
+.split-line {
+  height: 0.03125rem;
+  background-color: #e5e5e5;
+  width: 100%;
 }
 
-
-	/* 图标按钮 */
-.icon-btn[data-v-07e72d3c] {
-		width: 1.875rem;
-		height: 1.875rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		background: #f0f0f0;
-		border-radius: 0.375rem;
-
-		transition: all 0.15s;
-}
-.icon-btn[data-v-07e72d3c]:active {
-		transform: scale(0.9);
-		background: #e0e0e0;
+/* ==========全局灰色按钮样式+点击反馈========== */
+.gray-btn {
+  background: #cccccc !important;
+  color: #333333 !important;
+  border: none !important;
+  border-radius: 0.25rem !important;
 }
 
-	/* ===== 内容区 ===== */
-.content[data-v-07e72d3c] {
-		flex: 1;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+/* 按钮按下变暗 */
+.gray-btn:active {
+  background: #b3b3b3 !important;
 }
 
-	/* 面板 */
-.panel[data-v-07e72d3c] {
-		width: 92%;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 0.625rem;
+/* ==========弹窗美化========== */
+.pop-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.pop-box {
+  width: 82%;
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.09375rem;
+}
+.pop-item {
+  margin-bottom: 1.09375rem;
+}
+.pop-label {
+  font-size: 0.9375rem;
+  color: #444;
+  display: block;
+  margin-bottom: 0.4375rem;
 }
 
-	/* 最后一个子项单独居中 */
-.panel[data-v-07e72d3c]> :last-child {
-		grid-column: 1 / -1;
-		/* justify-self: center; */
+/* 加高输入框，大气样式 */
+.pop-input {
+  width: 100%;
+  height: 2.8125rem;
+  border: 0.03125rem solid #dddddd;
+  border-radius: 0.375rem;
+  padding: 0 0.625rem;
+  font-size: 0.9375rem;
+  background: #fafafa;
+}
+.pop-input:focus {
+  border-color: #bbbbbb;
 }
 
-	/* ✅ 正方形按钮（唯一关键点） */
-.panel-btn[data-v-07e72d3c] {
-		aspect-ratio: 1 / 1;
-		/* ⭐ 正方形 */
-
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 0.625rem;
-
-		padding: 0.9375rem;
-		/* ⭐ 留白关键 */
-
-		background: #e5e5e5;
-		border-radius: 0.75rem;
-
-		box-sizing: border-box;
-		transition: all 0.2s;
+/* 发送按钮整行居中铺满 */
+.pop-btn-wrap {
+  margin-top: 0.625rem;
 }
-
-	/* 文字 */
-.panel-btn uni-text[data-v-07e72d3c] {
-		font-size: 0.9375rem;
+.pop-send-btn {
+  width: 100% !important;
+  height: 2.75rem !important;
+  line-height: 2.75rem !important;
+  background: #cccccc !important;
+  color: #333 !important;
+  border-radius: 0.375rem !important;
+  border: 0 !important;
+  font-size: 1rem;
 }
-
-	/* 点击反馈 */
-.panel-btn[data-v-07e72d3c]:active {
-		transform: scale(0.96);
-}
-
-	/* 激活 */
-.panel-btn.active[data-v-07e72d3c] {
-		background: #8c8c8c;
-		color: #fff;
+.pop-send-btn:active {
+  background: #b3b3b3 !important;
 }

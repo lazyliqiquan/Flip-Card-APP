@@ -1,5 +1,14 @@
 <template>
-	<TopBar :isShow="true" iconType="back" title="验证非人机" @click="back"></TopBar>
+	<!-- 自定义导航栏 -->
+	<view class="navbar">
+		<view class="nav-left" @click="back">
+			<view class="icon-btn">
+				<uni-icons type="back" size="20" color="#333"></uni-icons>
+			</view>
+		</view>
+		<view class="nav-title">验证</view>
+	</view>
+
 	<!-- 卡片 -->
 	<view class="card">
 		<view class="progress">{{ current + 1 }}/{{ 3 }}</view>
@@ -21,7 +30,6 @@
 	import {
 		useDeviceStore
 	} from '@/stores/device'
-	import TopBar from '@/components/TopBar.vue'
 	import RightToast from '@/components/RightToast.vue'
 	const current = ref(0)
 	const answer = ref('')
@@ -31,8 +39,8 @@
 	const store = useDeviceStore()
 
 	function back() {
-		uni.reLaunch({
-			url: '/pages/home/home'
+		uni.navigateBack({
+			delta: 1
 		})
 	}
 
@@ -56,7 +64,7 @@
 		}
 
 		if (val === correct.value) {
-			if (current.value + 1 >= 1) {
+			if (current.value + 1 >= 3) {
 				if (store.futureModel <= 1) {
 					await store.control(store.futureModel.toString())
 					if (!store.isSucceed) {
@@ -64,10 +72,6 @@
 					}
 					back()
 				} else if (store.futureModel == 2) {
-					if (store.model === store.futureModel) {
-						await store.control('2' + store.codeList.join(''))
-						toastRef.value.show(store.isSucceed ? '发送成功' : '发送失败')
-					}
 					uni.reLaunch({
 						url: '/pages/sendMsg/sendMsg'
 					})
@@ -99,6 +103,50 @@
 </script>
 
 <style scoped>
+	/* ===== 导航栏 ===== */
+	.navbar {
+		height: 88rpx;
+		padding-top: var(--status-bar-height);
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		position: relative;
+		background: #ffffff;
+		border-bottom: 1rpx solid #eee;
+	}
+
+	.nav-title {
+		font-size: 32rpx;
+		font-weight: 600;
+	}
+
+	.nav-left {
+		position: absolute;
+		left: 30rpx;
+		bottom: 20rpx;
+	}
+
+	.icon-btn {
+		width: 60rpx;
+		height: 60rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		background: #f0f0f0;
+		border-radius: 12rpx;
+
+		transition: all 0.15s;
+	}
+
+	.icon-btn:active {
+		transform: scale(0.9);
+		background: #e0e0e0;
+	}
+
+
 	/* 卡片：左右相等间隙 + 内部超大垂直间距 */
 	.card {
 		background: #fff;

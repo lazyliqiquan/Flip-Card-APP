@@ -1,7 +1,14 @@
 <template>
 	<view class="container">
-		<TopBar :isShow="true" iconType="back" title="发送文本" @click="back"></TopBar>
-
+		<!-- 自定义导航栏 -->
+		<view class="navbar">
+			<view class="nav-left" @click="back">
+				<view class="icon-btn">
+					<uni-icons type="back" size="20" color="#333"></uni-icons>
+				</view>
+			</view>
+			<view class="nav-title">发送文本</view>
+		</view>
 
 		<!-- 输入框 -->
 		<view class="code-box">
@@ -72,7 +79,6 @@
 	import {
 		ref
 	} from 'vue'
-	import TopBar from '@/components/TopBar.vue'
 	import RightToast from '@/components/RightToast.vue'
 	import {
 		useDeviceStore
@@ -162,20 +168,36 @@
 	]
 
 	function back() {
-		uni.reLaunch({
-			url: '/pages/home/home'
+		uni.navigateBack({
+			delta: 1
 		})
 	}
 
-	let flag = false
+	let flag = false,
+		timer = false
 	const onSend = async () => {
 		if (flag) {
 			return
 		}
-		store.codeList = codeList
-		uni.reLaunch({
-			url: `/pages/trial/trial`
-		})
+		if (timer) {
+			toastRef.value.show('发送频率太高，请等待片刻')
+			return
+		}
+		flag = true
+		timer = true
+		let msg = codeList.value.join('')
+		msg = msg.replaceAll('♡', '*')
+		console.log(msg)
+		await store.control('2' + msg)
+		if (store.isSucceed) {
+			toastRef.value.show('发送成功')
+		} else {
+			toastRef.value.show('发送失败')
+		}
+		setTimeout(() => {
+			timer = false
+		}, 10000)
+		flag = false
 	}
 
 	const vibrate = () => {
@@ -216,6 +238,49 @@
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
+	}
+
+	/* ===== 导航栏 ===== */
+	.navbar {
+		height: 88rpx;
+		padding-top: var(--status-bar-height);
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		position: relative;
+		background: #ffffff;
+		border-bottom: 1rpx solid #eee;
+	}
+
+	.nav-title {
+		font-size: 32rpx;
+		font-weight: 600;
+	}
+
+	.nav-left {
+		position: absolute;
+		left: 30rpx;
+		bottom: 20rpx;
+	}
+
+	.icon-btn {
+		width: 60rpx;
+		height: 60rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		background: #f0f0f0;
+		border-radius: 12rpx;
+
+		transition: all 0.15s;
+	}
+
+	.icon-btn:active {
+		transform: scale(0.9);
+		background: #e0e0e0;
 	}
 
 	.float-btn {
