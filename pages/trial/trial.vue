@@ -71,13 +71,9 @@
 						toastRef.value.show('查询设备状态失败，请检查设备连接是否正常')
 					}
 					back()
-				} else if (store.futureModel == 2) {
-					uni.reLaunch({
-						url: '/pages/sendMsg/sendMsg'
-					})
 				} else {
-					uni.reLaunch({
-						url: '/pages/calcGame/calcGame'
+					uni.redirectTo({
+						url: '/pages/sendMsg/sendMsg'
 					})
 				}
 			} else {
@@ -151,7 +147,7 @@
 	.card {
 		background: #fff;
 		border-radius: 20rpx;
-		margin-top: 100rpx;
+		margin-top: 30rpx;
 		padding: 80rpx 40rpx;
 		display: flex;
 		flex-direction: column;
@@ -173,7 +169,7 @@
 		font-size: 60rpx;
 		font-weight: 500;
 		color: #222;
-		margin-top: 20rpx;
+		margin-top: 10rpx;
 	}
 
 	.input {
@@ -184,7 +180,7 @@
 		text-align: center;
 		font-size: 36rpx;
 		color: #333;
-		margin-top: 30rpx;
+		margin-top: 15rpx;
 	}
 
 	.btn {
@@ -196,7 +192,7 @@
 		border-radius: 12rpx;
 		font-size: 30rpx;
 		border: none;
-		margin-top: 30rpx;
+		margin-top: 15rpx;
 	}
 
 	.mask {

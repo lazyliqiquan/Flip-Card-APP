@@ -15,9 +15,6 @@
 		const store = useUserStore()
 		store.username = uni.getStorageSync('username')
 		let url = uni.getStorageSync('url')
-		// FIXME: 记得删掉
-		store.username = "liqiquan"
-		url = "http://192.168.1.2:8000"
 		// 设置网络服务器的IP:port
 		Request.init(url)
 		await store.login()

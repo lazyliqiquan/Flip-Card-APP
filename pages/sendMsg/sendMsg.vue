@@ -186,7 +186,7 @@
 		flag = true
 		timer = true
 		let msg = codeList.value.join('')
-		msg = msg.replaceAll('♡', '*')
+		msg = msg.replace(/♡/g, '*')
 		console.log(msg)
 		await store.control('2' + msg)
 		if (store.isSucceed) {
@@ -217,10 +217,10 @@
 
 		if (k.type === 'delete') {
 			if (codeList.value[currentIndex.value]) {
-				codeList.value[currentIndex.value] = ''
+				codeList.value[currentIndex.value] = ' '
 			} else if (currentIndex.value > 0) {
 				currentIndex.value--
-				codeList.value[currentIndex.value] = ''
+				codeList.value[currentIndex.value] = ' '
 			}
 			return
 		}

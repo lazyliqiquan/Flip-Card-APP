@@ -64,21 +64,15 @@
 	})
 
 	const btnList = [{
-			name: '时间',
-			icon: 'iconfont icon-time'
-		}, {
-			name: '日期',
-			icon: 'iconfont icon-date'
-		}, {
-			name: '文本',
-			icon: 'iconfont icon-msg'
-		},
-		// {
-		// 	name: '算术',
-		// 	icon: 'iconfont icon-jisuan'
-		// },
-
-	]
+		name: '时间',
+		icon: 'iconfont icon-time'
+	}, {
+		name: '日期',
+		icon: 'iconfont icon-date'
+	}, {
+		name: '文本',
+		icon: 'iconfont icon-msg'
+	}, ]
 
 	function openRoot() {
 		uni.navigateTo({
@@ -192,33 +186,33 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 20rpx;
+		/* 新增：网格整体水平居中 */
+		justify-items: center;
 	}
 
-	/* 最后一个子项单独居中 */
-	.panel> :last-child {
-		grid-column: 1 / -1;
-		/* justify-self: center; */
-	}
-
-	/* ✅ 正方形按钮（唯一关键点） */
+	/* 前两个按钮默认占满各自格子宽度 */
 	.panel-btn {
+		width: 100%;
 		aspect-ratio: 1 / 1;
-		/* ⭐ 正方形 */
-
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		gap: 20rpx;
-
 		padding: 30rpx;
-		/* ⭐ 留白关键 */
-
 		background: #e5e5e5;
 		border-radius: 24rpx;
-
 		box-sizing: border-box;
 		transition: all 0.2s;
+	}
+
+	/* 最后一个子项单独居中，宽度等于单个按钮 */
+	.panel> :last-child {
+		grid-column: 1 / -1;
+		/* 横跨两列整行 */
+		width: calc(50% - 10rpx);
+		/* 单格宽度 = 半行 - 间隙一半，和上方按钮等宽 */
+		/* 或直接 width: 1fr; 配合容器justify-items:center 也生效 */
 	}
 
 	/* 文字 */

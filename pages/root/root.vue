@@ -223,6 +223,24 @@
 		bottom: 20rpx;
 	}
 
+	.icon-btn {
+		width: 60rpx;
+		height: 60rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		background: #f0f0f0;
+		border-radius: 12rpx;
+
+		transition: all 0.15s;
+	}
+
+	.icon-btn:active {
+		transform: scale(0.9);
+		background: #e0e0e0;
+	}
+
 	/* 页面整体 */
 	.admin-container {
 		background-color: #f2f2f2;
