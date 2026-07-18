@@ -216,11 +216,9 @@
 		vibrate()
 
 		if (k.type === 'delete') {
-			if (codeList.value[currentIndex.value]) {
-				codeList.value[currentIndex.value] = ' '
-			} else if (currentIndex.value > 0) {
+			codeList.value[currentIndex.value] = ' '
+			if (currentIndex.value > 0) {
 				currentIndex.value--
-				codeList.value[currentIndex.value] = ' '
 			}
 			return
 		}
