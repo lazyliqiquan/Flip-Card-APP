@@ -182,6 +182,8 @@
 		if (timer) {
 			toastRef.value.show('发送频率太高，请等待片刻')
 			return
+		} else {
+			toastRef.value.show('正在发送')
 		}
 		flag = true
 		timer = true
@@ -192,7 +194,7 @@
 		if (store.isSucceed) {
 			toastRef.value.show('发送成功')
 		} else {
-			toastRef.value.show('发送失败')
+			toastRef.value.show('发送失败,请检查设备连接状态')
 		}
 		setTimeout(() => {
 			timer = false
@@ -330,7 +332,7 @@
 	}
 
 	.code-item.active {
-		border-color: #555;
+		border: 3rpx solid #555;
 	}
 
 	.input-space-line {

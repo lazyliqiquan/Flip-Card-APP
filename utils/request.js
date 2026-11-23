@@ -1,5 +1,5 @@
 // const baseUrl = "https://uapis.cn/api/v1/misc/weather?city=北京"; // 你的公网IP
-// export let baseUrl = "http://192.168.1.30:8000"; // 你的公网IP
+// export let baseUrl = "http://192.168.1.2:8000"; // 你的公网IP
 
 class Request {
 	// 静态成员 url，所有实例共享

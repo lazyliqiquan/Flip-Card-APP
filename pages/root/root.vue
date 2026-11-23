@@ -10,34 +10,44 @@
 	</view>
 
 	<view class="admin-container">
-		<!-- 2. 创建新用户 -->
 		<view class="module-card">
-			<input class="full-input" v-model="createName" placeholder="请输入用户名（仅字母、下划线）"
-				@input="formatInput('create')" />
+			<input class="full-input" v-model="username" placeholder="请输入用户名（仅字母、下划线）" @input="formatInput()" />
 			<button class="full-btn mt-space" @click="submitCreate">创建用户</button>
-		</view>
-
-		<!-- 3. 查找指定用户 -->
-		<view class="module-card">
-			<input class="full-input" v-model="searchName" placeholder="请输入用户名（仅字母、下划线）"
-				@input="formatInput('search')" />
-			<button class="full-btn mt-space" @click="searchSingleUser">查询用户</button>
+			<button class="full-btn mt-space" @click="submitDelete">删除用户</button>
+			<button class="full-btn mt-space" @click="searchContorlUser">查询&控制用户</button>
 			<!-- 用户信息展示区 -->
 			<view v-if="store.singleUser.length" class="info-panel mt-space">
 				<text class="info-item">用户名：{{ store.singleUser[0].username }}</text>
-				<text class="info-item">登录时间：{{ store.singleUser[0].login_time || '暂无登录记录' }}</text>
+				<text class="info-item">最近登录时间：{{ store.singleUser[0].login_time || '暂无登录记录' }}</text>
 				<button class="full-btn mt-space" @click="copyUserLink">复制该用户加密链接</button>
+				<!-- 5个按钮横向排列 -->
+				<text class="info-item mt-space">步进电机误差值(从左到右、每步需91脉冲)</text>
+				<view class="btn-row mt-space">
+					<button class="num-btn" @click="openInput(0)">{{ motorErrList[0] }}</button>
+					<button class="num-btn" @click="openInput(1)">{{ motorErrList[1] }}</button>
+					<button class="num-btn" @click="openInput(2)">{{ motorErrList[2] }}</button>
+					<button class="num-btn" @click="openInput(3)">{{ motorErrList[3] }}</button>
+					<button class="num-btn" @click="openInput(4)">{{ motorErrList[4] }}</button>
+				</view>
+				<!-- 自定义居中弹窗 -->
+				<view v-if="showPopup" class="mask" @click.self="closePopup">
+					<view class="dialog">
+						<view class="dialog-title">设置数值</view>
+						<input class="dialog-input" v-model="tempVal" type="number" placeholder="正数 / 负数均可，例：-5、100"
+							:focus="showPopup" />
+						<view class="dialog-divider"></view>
+						<view class="dialog-action">
+							<view class="action-btn cancel" @click="closePopup">取消</view>
+							<view class="action-btn confirm" @click="onConfirm">确定</view>
+						</view>
+					</view>
+				</view>
+				<button class="full-btn mt-space" @click="verifyErr">矫正误差</button>
+				<button class="full-btn close-btn mt-space" @click="store.singleUser = []">关闭</button>
 			</view>
 		</view>
 
-		<!-- 4. 删除指定用户 -->
-		<view class="module-card">
-			<input class="full-input" v-model="deleteName" placeholder="请输入用户名（仅字母、下划线）"
-				@input="formatInput('delete')" />
-			<button class="full-btn mt-space" @click="submitDelete">删除用户</button>
-		</view>
-
-		<!-- 5. 查找所有用户 -->
+		<!-- 4. 查找所有用户 -->
 		<view class="module-card">
 			<button class="full-btn" @click="getAllUserList">加载全部用户</button>
 			<!-- 全部用户列表弹窗 -->
@@ -68,10 +78,14 @@
 		useUserStore
 	} from '@/stores/user.js'
 	import {
+		useDeviceStore
+	} from '@/stores/device.js'
+	import {
 		aesEncrypt
 	} from '@/utils/crypto'
 	import Request from '@/utils/request'
 	const store = useUserStore()
+	const deviceStore = useDeviceStore()
 
 	onLoad(() => {
 		// 清理缓存数据
@@ -86,36 +100,18 @@
 	}
 
 	const toastRef = ref(null)
-
-	// 弹窗状态
-	const showAllUserBox = ref(false)
-
-	// 表单数据
-	const createName = ref('')
-	const deleteName = ref('')
-	const searchName = ref('')
-
 	// 正则：仅允许大小写字母 + 下划线
 	const reg = /[^A-Za-z_]/g
-
 	// 输入过滤，自动剔除非法字符
-	const formatInput = (type) => {
-		switch (type) {
-			case 'create':
-				createName.value = createName.value.replace(reg, '')
-				break
-			case 'delete':
-				deleteName.value = deleteName.value.replace(reg, '')
-				break
-			case 'search':
-				searchName.value = searchName.value.replace(reg, '')
-				break
-		}
-	}
+	const username = ref('')
 
+	const formatInput = () => {
+		username.value = username.value.replace(reg, '')
+	}
+	// ========================================================	创建用户 ===========================
 	// 创建用户（纯前端占位，自行对接接口）
 	const submitCreate = async () => {
-		const name = createName.value.trim()
+		const name = username.value.trim()
 		if (!name) {
 			uni.showToast({
 				title: '用户名不能为空',
@@ -129,12 +125,10 @@
 		} else {
 			toastRef.value.show('创建新用户失败')
 		}
-		createName.value = ''
 	}
-
 	// 删除用户（纯前端占位，自行对接接口）
 	const submitDelete = async () => {
-		const name = deleteName.value.trim()
+		const name = username.value.trim()
 		if (!name) {
 			uni.showToast({
 				title: '用户名不能为空',
@@ -149,8 +143,45 @@
 		} else {
 			toastRef.value.show('删除用户失败')
 		}
-		deleteName.value = ''
 	}
+	// =============================================查询用户 ============================
+	// 初始化5个按钮默认文字作为设备步进电机的误差值，你可以改成 0 或者空
+	const motorErrList = ref([0, 0, 0, 0, 0])
+	// 查找单个用户（纯前端占位，自行对接接口）
+	const searchContorlUser = async () => {
+		const name = username.value.trim()
+		if (!name) {
+			uni.showToast({
+				title: '请输入用户名',
+				icon: 'none'
+			})
+			return
+		}
+		await store.getUserInfo(name)
+		// 用户要确实存在才查询该设备的误差值
+		if (store.isSucceed && store.singleUser.length !== 0) {
+			// 控制的设备变了，需要清除上一个设备留下来的缓存
+			deviceStore.cleanData()
+			toastRef.value.show('查询用户成功')
+			// 查询当前设备误差
+			await deviceStore.control('7')
+			if (deviceStore.isSucceed) {
+				console.log(deviceStore.device_reply)
+				// 倒置一下，确保步进电机顺序对的上
+				const temp_arr = deviceStore.device_reply.split('$').reverse()
+				if (temp_arr.length === 5) {
+					for (let i = 0; i < 5; i++) {
+						motorErrList.value[i] = temp_arr[i]
+					}
+				}
+			} else {
+				toastRef.value.show('查询设备误差值失败')
+			}
+		} else {
+			toastRef.value.show('查询用户失败')
+		}
+	}
+	// ===========================================复制用户加密链接======================================================
 	// 复制指定用户的设备加密链接
 	function copyUserLink() {
 		uni.setClipboardData({
@@ -160,25 +191,51 @@
 			}
 		})
 	}
-
-	// 查找单个用户（纯前端占位，自行对接接口）
-	const searchSingleUser = async () => {
-		const name = searchName.value.trim()
-		if (!name) {
+	// =================================================矫正误差=========================================================
+	const showPopup = ref(false)
+	const currentIndex = ref(0)
+	const tempVal = ref('')
+	const openInput = (idx) => {
+		currentIndex.value = idx
+		tempVal.value = String(motorErrList.value[idx])
+		showPopup.value = true
+	}
+	const closePopup = () => {
+		showPopup.value = false
+	}
+	const onConfirm = () => {
+		const n = Number(tempVal.value)
+		if (isNaN(n)) {
 			uni.showToast({
-				title: '请输入用户名',
+				title: '请输入有效的数字',
 				icon: 'none'
 			})
 			return
 		}
-		await store.getUserInfo(name)
-		if (store.isSucceed) {
-			toastRef.value.show('查询用户成功')
+		// 因为步进电机使用的转动模式转一圈总共最多只需要4096个脉冲信号
+		if (n < 4096 && n > -4096) {
+			motorErrList.value[currentIndex.value] = n
+
 		} else {
-			toastRef.value.show('查询用户失败')
+			uni.showToast({
+				title: '请输入有效的数字',
+				icon: 'none'
+			})
+		}
+		closePopup()
+	}
+	const verifyErr = async () => {
+		await deviceStore.control('7' + [...motorErrList.value].reverse().join('$'))
+		console.log('Hello')
+		if (deviceStore.isSucceed) {
+			toastRef.value.show('修改设备误差值成功')
+		} else {
+			toastRef.value.show('修改设备误差值失败')
 		}
 	}
-
+	// =============================================加载全部用户=================================================
+	// 弹窗状态
+	const showAllUserBox = ref(false)
 	// 查找所有用户（纯前端占位，自行对接接口）
 	const getAllUserList = async () => {
 		await store.getAllUsers()
@@ -371,5 +428,84 @@
 	/* 列表弹窗关闭按钮 */
 	.close-btn {
 		border-radius: 0;
+	}
+
+	.btn-row {
+		display: flex;
+		flex-direction: row;
+		gap: 16rpx;
+	}
+
+	.num-btn {
+		flex: 1;
+		font-size: 24rpx;
+		padding: 10rpx 0;
+		margin: 0;
+	}
+
+	/* 遮罩层 */
+	.mask {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.42);
+		z-index: 999;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.dialog {
+		width: 640rpx;
+		background-color: #fff;
+		border-radius: 20rpx;
+		overflow: hidden;
+	}
+
+	.dialog-title {
+		text-align: center;
+		font-size: 34rpx;
+		color: #222;
+		padding: 36rpx 30rpx 20rpx;
+		font-weight: 500;
+	}
+
+	.dialog-input {
+		margin: 0 30rpx;
+		padding: 24rpx 20rpx;
+		background-color: #f7f8fa;
+		border-radius: 12rpx;
+		font-size: 32rpx;
+	}
+
+	.dialog-divider {
+		height: 1rpx;
+		background-color: #eeeeee;
+		margin-top: 30rpx;
+	}
+
+	.dialog-action {
+		display: flex;
+	}
+
+	.action-btn {
+		flex: 1;
+		text-align: center;
+		padding: 26rpx 0;
+		font-size: 32rpx;
+	}
+
+	.cancel {
+		color: #666;
+		background-color: #fff;
+		border-right: 1rpx solid #eee;
+	}
+
+	.confirm {
+		color: #409eff;
+		background-color: #fff;
+		font-weight: 500;
 	}
 </style>

@@ -35,6 +35,7 @@
 	const store = useUserStore()
 	const handleLogin = async () => {
 		if (isClick) return
+		toastRef.value.show('正在登陆...')
 		isClick = true
 		const d = aesDecrypt(link.value.trim())
 		const info = d.split('#')

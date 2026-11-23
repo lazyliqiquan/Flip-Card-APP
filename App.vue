@@ -15,9 +15,22 @@
 		const store = useUserStore()
 		store.username = uni.getStorageSync('username')
 		let url = uni.getStorageSync('url')
+
+
+
+
+		// debug
+		// store.username = 'liqiquan'
+		// // url = 'http://192.168.1.2:8000'
+		// url = 'http://112.124.52.31:5000'
+		// console.log(aesEncrypt(`${store.username}#${url}`))
+
+
+
 		// 设置网络服务器的IP:port
 		Request.init(url)
 		await store.login()
+
 	})
 </script>
 

@@ -7,6 +7,7 @@
 					<uni-icons type="contact" size="20" color="#333"></uni-icons>
 				</view>
 			</view>
+			
 			<view class="nav-title">设备控制</view>
 
 			<view class="nav-right" @click="openSetting">
@@ -45,7 +46,7 @@
 	} from '@/stores/user.js'
 
 	import {
-		onLoad
+		onReady
 	} from "@dcloudio/uni-app";
 	import Request from '@/utils/request'
 
@@ -53,7 +54,7 @@
 	const userStore = useUserStore()
 	const toastRef = ref(null)
 	// 获取当前设备的状态
-	onLoad(async () => {
+	onReady(async () => {
 		if (store.model !== -1) {
 			return
 		}

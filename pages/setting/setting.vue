@@ -16,7 +16,8 @@
 		<view class="item-box">
 			<text class="item-title"><b>设备ID</b></text>
 			<view class="item-content">
-				<text class="text-val">{{userStore.username}}</text>
+				<text
+					class="text-val">{{userStore.singleUser.length === 0 ? userStore.username : userStore.singleUser[0].username}}</text>
 			</view>
 		</view>
 		<view class="split-line"></view>
@@ -30,15 +31,6 @@
 		</view>
 		<view class="split-line"></view>
 
-		<!-- 3、设备加密链接模块 -->
-		<view class="item-box">
-			<text class="item-title"><b>设备加密链接</b></text>
-			<view class="item-content">
-				<button class="gray-btn" @click="copyEncryptUrl">复制链接</button>
-			</view>
-		</view>
-		<view class="split-line"></view>
-
 		<!-- 4、默认密码模块（修改格式：SSID、密码分开标注） -->
 		<view class="item-box">
 			<text class="item-title"><b>默认WiFi配置</b></text>
@@ -47,7 +39,7 @@
 				<view style="margin-top:8rpx;"></view>
 				<text class="text-val">密码：{{ defaultWifiPwd }}</text>
 				<view style="margin-top:8rpx;"></view>
-				<text class="tip-desc">(优先使用自定义WIFI配置)</text>
+				<text class="tip-desc">(优先使用自定义WIFI配置连接网络)</text>
 			</view>
 		</view>
 		<view class="split-line"></view>
@@ -86,11 +78,13 @@
 			<view class="pop-box" @click.stop>
 				<view class="pop-item">
 					<text class="pop-label">名称</text>
-					<input class="pop-input" v-model="tempSsid" @input="filterDollar('ssid')" placeholder="" />
+					<input class="pop-input" v-model="tempSsid" @input="filterDollar('ssid')"
+						placeholder="3 < length < 20" />
 				</view>
 				<view class="pop-item">
 					<text class="pop-label">密码</text>
-					<input class="pop-input" v-model="tempPwd" @input="filterDollar('pwd')" placeholder="" />
+					<input class="pop-input" v-model="tempPwd" @input="filterDollar('pwd')"
+						placeholder="8 < length < 20" />
 				</view>
 				<view class="pop-btn-wrap">
 					<button class="pop-send-btn" @click="sendWifiInfo">确认修改</button>
@@ -106,7 +100,7 @@
 		ref
 	} from 'vue'
 	import {
-		onLoad
+		onReady
 	} from "@dcloudio/uni-app"
 	import RightToast from '@/components/RightToast.vue'
 	import {
@@ -116,35 +110,32 @@
 		useUserStore
 	} from '@/stores/user'
 	import Request from '@/utils/request'
-	import {
-		aesEncrypt
-	} from '@/utils/crypto'
-
-
-
 
 	const store = useDeviceStore()
 	const userStore = useUserStore()
 	const toastRef = ref(null)
-	const link = ref(aesEncrypt(`${userStore.username}#${Request.url}`))
-	// 拆分默认WIFI：SSID=Lqq，密码=Hello_lady
+	// 拆分默认WIFI：SSID=Lqq，密码=Bless_you
 	const defaultSsid = ref('Lqq')
-	const defaultWifiPwd = ref('Hello_lady')
+	const defaultWifiPwd = ref('Bless_you')
 
 	// 弹窗控制
 	const showWifiPop = ref(false)
 	const tempSsid = ref('')
 	const tempPwd = ref('')
 
-	onLoad(async () => {
-		console.log('Heloo')
+	onReady(async () => {
 		await store.control('4')
 		if (!store.isSucceed) {
 			toastRef.value.show('查询设备状态失败，请检查设备连接是否正常')
 		}
 	})
-
-
+	// 返回主界面
+	function back() {
+		uni.navigateBack({
+			delta: 1
+		})
+	}
+	// =============================================修改WiFi配置=================================================
 	let send_flag = false
 	// 打开弹窗
 	const openWifiDialog = () => {
@@ -171,22 +162,15 @@
 			tempPwd.value = tempPwd.value.replace(allowReg, '')
 		}
 	}
-	// 复制加密链接
-	const copyEncryptUrl = () => {
-		uni.setClipboardData({
-			data: link.value,
-			success: () => {
-				toastRef.value.showToast('复制成功')
-			}
-		})
-	}
-
-
 	// 发送wifi配置
 	const sendWifiInfo = async () => {
 		send_flag = true
 		if (tempSsid.value.length < 3 || tempPwd.value.length < 8) {
 			toastRef.value.show('WiFi名称或密码过短')
+			return
+		}
+		if (tempSsid.value.length > 20 || tempPwd.value.length > 20) {
+			toastRef.value.show('WiFi名称或密码过长')
 			return
 		}
 		closeWifiDialog()
@@ -200,7 +184,7 @@
 		}
 		send_flag = false
 	}
-
+	// =============================================设备校验=================================================
 	let calibrate_flag = false
 	// 设备校准按钮事件
 	const deviceCalibrate = async () => {
@@ -226,16 +210,7 @@
 			}
 		})
 	}
-	// ==============================
-
-
-
-	// 返回主界面
-	function back() {
-		uni.navigateBack({
-			delta: 1
-		})
-	}
+	// =============================================退出登陆=================================================
 	// 清空当前页面栈，返回登陆界面
 	function logout() {
 		// 清理缓存数据再退出，以免影响新登录账号
@@ -381,7 +356,7 @@
 
 	/* 加高输入框，大气样式 */
 	.pop-input {
-		width: 100%;
+		width: 93%;
 		height: 90rpx;
 		border: 1rpx solid #dddddd;
 		border-radius: 12rpx;
