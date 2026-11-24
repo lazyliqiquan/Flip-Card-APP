@@ -7,7 +7,7 @@
 					<uni-icons type="contact" size="20" color="#333"></uni-icons>
 				</view>
 			</view>
-			
+
 			<view class="nav-title">设备控制</view>
 
 			<view class="nav-right" @click="openSetting">
@@ -16,8 +16,12 @@
 				</view>
 			</view>
 		</view>
+		<view class="ekko-quote">
+			<view class="cn-text">时间不在于你拥有多少，而在于你怎样使用。</view>
+		</view>
 		<!-- 中央按钮区域 -->
 		<view class="content">
+
 			<view class="panel">
 				<view v-for="(item, index) in btnList" :key="index" class="panel-btn"
 					:class="{ active: index === store.model }" @click="handleClick(index)">
@@ -173,6 +177,34 @@
 		background: #e0e0e0;
 	}
 
+	/* 经典语录区 */
+	.ekko-quote {
+		position: fixed;
+		top: 20vh;
+		/* 控制垂直位置，20vh就是中上方，按需改 15vh / 25vh */
+		left: 0;
+		right: 0;
+		text-align: center;
+		padding: 0 30rpx;
+		/* 防止被其他元素盖住，按需调整z-index */
+		z-index: 99;
+	}
+
+	.en-text {
+		font-size: 34rpx;
+		line-height: 1.6;
+		color: #333;
+		margin-bottom: 16rpx;
+	}
+
+	.cn-text {
+		font-size: 30rpx;
+		line-height: 1.6;
+		color: #555;
+	}
+
+
+
 	/* ===== 内容区 ===== */
 	.content {
 		flex: 1;
@@ -180,6 +212,8 @@
 		justify-content: center;
 		align-items: center;
 	}
+
+
 
 	/* 面板 */
 	.panel {

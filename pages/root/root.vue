@@ -87,12 +87,6 @@
 	const store = useUserStore()
 	const deviceStore = useDeviceStore()
 
-	onLoad(() => {
-		// 清理缓存数据
-		store.singleUser = []
-		store.user_list = []
-	})
-
 	function back() {
 		uni.navigateBack({
 			delta: 1
